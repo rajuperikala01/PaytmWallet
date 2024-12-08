@@ -1,9 +1,14 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import { Providers } from "../provider";
+import AppbarClient from "./components/AppbarClient";
 
 const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Turborepo",
@@ -16,9 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }): JSX.Element {
   return (
-    <html lang="en">
+    <html lang="en" className={`${poppins.className}`}>
       <Providers>
-        <body className={inter.className}>{children}</body>
+        <body className={`bg-[#e0f5fd]`}>
+          <div>{children}</div>
+        </body>
       </Providers>
     </html>
   );

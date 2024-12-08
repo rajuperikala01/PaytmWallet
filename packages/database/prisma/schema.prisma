@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   Int                  @id @default(autoincrement())
+  email                String               @unique
+  name                 String
+  number               String               @unique
+  password             String
+  OnRampTransaction    OnRampTransaction[]
+  Balance              Int                  @default(0)
+  bankCustomerId       Int?
+  sentTransactions     WalletTransactions[] @relation("senderRelation")
+  receivedTransactions WalletTransactions[] @relation("reciverRelation")
+}
+
+model WalletTransactions {
+  id        Int      @id @default(autoincrement())
+  status    Status
+  senderId  Int
+  sender    User     @relation("senderRelation", fields: [senderId], references: [id], onDelete: Cascade)
+  reciverId Int
+  receiver  User     @relation("reciverRelation", fields: [reciverId], references: [id], onDelete: Cascade)
+  amount    Int
+  createdAt DateTime
+}
+
+model OnRampTransaction {
+  id        Int      @id @default(autoincrement())
+  status    Status
+  token     String   @unique
+  provider  String
+  amount    Int
+  startTime DateTime
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Customer {
+  customerId    Int                 @id @default(autoincrement())
+  email         String              @unique
+  customerName  String
+  mobile        String              @unique
+  accountNumber String              @unique
+  balance       Int                 @default(0)
+  transaction   Transactions[]
+  createdAt     DateTime
+  updatedAt     DateTime
+  accType       accType             @default(savings)
+  paytm         paytmTransactions[]
+}
+
+model Transactions {
+  id          Int       @id @default(autoincrement())
+  transType   transType
+  execBy      Int
+  transStatus transStat
+  toUserId    Int
+  createdAt   DateTime
+  updatedAt   DateTime
+  amount      Int
+  token       String    @unique
+  customer    Customer  @relation(fields: [execBy], references: [customerId], onDelete: Cascade)
+}
+
+model paytmTransactions {
+  id         Int      @id @default(autoincrement())
+  amount     Int
+  token      String
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
+}
+
+enum accType {
+  savings
+  current
+  loan
+}
+
+enum transType {
+  withdrawl
+  deposit
+  transfer
+}
+
+enum transStat {
+  Success
+  Failed
+  Processing
+}
+
+enum AuthType {
+  Google
+  Github
+}
+
+enum Status {
+  Success
+  Failed
+  Processing
+}
