@@ -31,6 +31,8 @@ export const POST = async (req: NextRequest) => {
   }
 
   try {
+    console.log(session);
+
     const fromUser = await prisma.user.findUniqueOrThrow({
       where: {
         id: Number(session.user.id),
@@ -53,7 +55,6 @@ export const POST = async (req: NextRequest) => {
             number: validation.data.to,
           },
         });
-
         await prisma.walletTransactions.create({
           data: {
             amount: validation.data.amount * 100,
@@ -78,6 +79,7 @@ export const POST = async (req: NextRequest) => {
         );
       }
     }
+
     try {
       const toUser = await prisma.user.findUniqueOrThrow({
         where: {

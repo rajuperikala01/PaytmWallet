@@ -66,6 +66,9 @@ export default async function () {
   return (
     <div className="pt-20 flex flex-col gap-2 px-3 lg:p-24 lg:pt-28">
       {transactions.map((tx) => {
+        if (tx.role === "receiver" && tx.tranStatus === "Failed") {
+          return;
+        }
         return (
           <div
             className="flex justify-between bg-stone-50
@@ -82,7 +85,7 @@ export default async function () {
                   Received from
                 </div>
               )}
-              <div className="flex font-medium text-gray-700 text-sm">
+              <div className="flex font-medium text-gray-700 text-sm lg:text-base">
                 {tx.role === "sender" ? tx.receiverName : tx.senderName}
                 {tx.tranStatus === "Success" && <SuccessIcon />}
                 {tx.tranStatus === "Failed" && <FailedIcon />}
@@ -96,7 +99,7 @@ export default async function () {
                   tx.tranStatus !== "Failed" &&
                   tx.tranStatus !== "Processing" &&
                   "text-red-500"
-                } font-medium text-sm ${
+                } font-medium text-sm lg:text-base ${
                   tx.role === "receiver" &&
                   tx.tranStatus !== "Failed" &&
                   tx.tranStatus !== "Processing" &&

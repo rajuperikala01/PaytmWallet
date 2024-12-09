@@ -1,129 +1,141 @@
-"use client";
-
+import { getServerSession } from "next-auth";
+import PersontoPerson from "../../components/P2pCard";
+import { authOptions } from "../../lib/auth";
+import { redirect } from "next/navigation";
+import prisma from "@repo/database/client";
+import SuccessIcon from "../../components/SuccessIcon";
+import FailedIcon from "../../components/FailedIcon";
+import Processing from "../../components/Processing";
 import { Card } from "@repo/ui/card";
-import { TextInput } from "@repo/ui/textinput";
-import { useState, useEffect } from "react";
-import { p2pTransfer } from "@repo/validation/bankschemas";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-interface objectP2p {
-  to: string;
-  amount: number;
-}
-function PersontoPerson() {
-  const [data, setData] = useState<objectP2p>({
-    to: "",
-    amount: 0,
+
+export default async function () {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/auth/signin");
+  }
+  const response = await prisma.walletTransactions.findMany({
+    where: {
+      OR: [
+        { senderId: Number(session.user.id) },
+        { reciverId: Number(session.user.id) },
+      ],
+    },
+    include: {
+      sender: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      receiver: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    take: 6,
+    orderBy: {
+      createdAt: "desc",
+    },
   });
-  const [error, setError] = useState<string>("");
-  const [processing, setProcessing] = useState<boolean>(false);
-  const router = useRouter();
+  console.log(response);
 
-  async function Transfer(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    const validatedData = p2pTransfer.safeParse(data);
-    if (validatedData.error) {
-      console.log(validatedData.error.issues[0]?.message);
-      setError(validatedData.error.issues[0]?.message || "Validation Error");
-      return;
+  const transactions = response.map((tx) => {
+    const sender = tx.senderId === parseInt(session.user.id);
+    if (sender) {
+      return {
+        role: "sender",
+        id: tx.id,
+        receiverName: tx.receiver.name,
+        receiverId: tx.reciverId,
+        amount: tx.amount / 100,
+        createdAt: tx.createdAt,
+        tranStatus: tx.status,
+      };
     }
-
-    setProcessing(true);
-    try {
-      const response = await axios.post("/api/payments/send", {
-        to: data.to,
-        amount: data.amount,
-      });
-      if (response.status === 200) {
-        router.push("/success");
-      }
-      setProcessing(false);
-    } catch (error: any) {
-      if (error instanceof AxiosError) {
-        if (error.code === "ECONNREFUSED" || error.code === "ENOTFOUND") {
-          setError("An unexpected error occurred. Please try again.");
-        }
-        if (error.status === 401) {
-          setError(
-            error.response?.data?.error ||
-              "An unexpected error occurred. Please try again."
-          );
-
-          return;
-        }
-        setError(
-          error.response?.data?.error ||
-            "An unexpected error occurred. Please try again."
-        );
-        return;
-      }
-      setError(
-        error.response?.data?.error ||
-          "An unexpected error occurred. Please try again."
-      );
-    } finally {
-      setProcessing(false);
-    }
-  }
-  async function getTransactions() {
-    const response = await axios,gt
-  }
-  
-  
+    return {
+      role: "receiver",
+      senderName: tx.sender.name,
+      id: tx.id,
+      senderId: tx.senderId,
+      amount: tx.amount / 100,
+      createdAt: tx.createdAt,
+      tranStatus: tx.status,
+    };
+  });
   return (
-    <div className="absolute top-20 left-0 right-0 grid grid-cols-1 md:grid-cols-3 md:px-10 lg:grid-cols-3 lg:px-20 lg:gap-5 px-1 pt-10">
-      <form
-        className="md:col-start-1 md:col-end-3 lg:col-start-1 lg:col-end-3 lg:px-20"
-        onSubmit={Transfer}
-      >
-        <Card title="Transfer">
-          {error.length > 0 && <div className="text-red-700">{error}</div>}
-
-          <div>
-            <TextInput
-              label="Mobile"
-              placeholder="Enter Mobile"
-              onChange={(val) =>
-                setData({
-                  ...data,
-                  to: val,
-                })
+    <div
+      className="absolute top-10 md:top-20 left-0 right-0 flex md:px-10
+      lg:px-20 lg:gap-2 px-1 pt-10 flex-wrap"
+    >
+      <div className="basis-full md:basis-1/2">
+        <PersontoPerson />
+      </div>
+      <div className="basis-full md:basis-[48%]">
+        <Card title="Recent Transactions">
+          <div className="flex flex-col gap-2">
+            {transactions.map((tx) => {
+              if (tx.role === "receiver" && tx.tranStatus === "Failed") {
+                return;
               }
-              type="text"
-              required={true}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="Amount"
-              placeholder="Enter Amount"
-              onChange={(val) =>
-                setData({
-                  ...data,
-                  amount: parseInt(val),
-                })
-              }
-              type="number"
-              required={true}
-            />
-          </div>
-
-          <div className="mt-10 md:mt-5">
-            <button
-              type="submit"
-              className="text-white bg-gray-800 whitespace-nowrap text-sm font-medium hover:bg-gray-900 focus:outline-none focus:ring-4 w-full focus:ring-gray-300 rounded-sm px-5 py-2"
-            >
-              {processing ? "Processing" : "Send"}
-            </button>
+              return (
+                <div
+                  className="flex justify-between bg-stone-50
+                rounded-lg shadow-sm shadow-gray-400 items-center px-2 py-4 lg:p-4"
+                  key={tx.id}
+                >
+                  <div>
+                    {tx.role === "sender" ? (
+                      <div className="text-xs text-gray-500 flex items-center tracking-widest">
+                        Sent to
+                      </div>
+                    ) : (
+                      <div className="text-xs text-gray-500 tracking-widest">
+                        Received from
+                      </div>
+                    )}
+                    <div className="flex font-medium text-gray-700 text-sm lg:text-base">
+                      {tx.role === "sender" ? tx.receiverName : tx.senderName}
+                      {tx.tranStatus === "Success" && <SuccessIcon />}
+                      {tx.tranStatus === "Failed" && <FailedIcon />}
+                      {tx.tranStatus === "Processing" && <Processing />}
+                    </div>
+                  </div>
+                  <div className="text-end text-gray-500">
+                    <div
+                      className={`${
+                        tx.role === "sender" &&
+                        tx.tranStatus !== "Failed" &&
+                        tx.tranStatus !== "Processing" &&
+                        "text-red-500"
+                      } font-medium text-sm lg:text-base ${
+                        tx.role === "receiver" &&
+                        tx.tranStatus !== "Failed" &&
+                        tx.tranStatus !== "Processing" &&
+                        "text-green-500"
+                      }`}
+                    >
+                      {tx.role === "sender" ? -tx.amount : `+${tx.amount}`}
+                    </div>
+                    <div className="text-slate-600 text-xs">
+                      {new Date(tx.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}{" "}
+                      {new Date(tx.createdAt).toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </Card>
-      </form>
-      <div className="md:col-start-3 md:col-end-4 hidden md:grid lg:col-start-3 lg:col-end-4">
-        <Card title="Recent transactions"></Card>
       </div>
     </div>
   );
 }
-
-export default PersontoPerson;

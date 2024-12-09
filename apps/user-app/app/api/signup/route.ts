@@ -5,7 +5,6 @@ import { signupSchema } from "@repo/validation/signupschema";
 
 export const POST = async (req: NextRequest) => {
   const body = await req?.json();
-  console.log("error");
 
   const validatedData = signupSchema.safeParse(body);
 
