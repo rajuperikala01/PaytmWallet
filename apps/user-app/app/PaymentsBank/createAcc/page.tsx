@@ -53,13 +53,17 @@ function CreateAcc() {
         return;
       }
     } catch (error: any) {
+      console.log("hi");
+
       if (error instanceof AxiosError) {
         console.log(error);
 
-        if (error.code === "ECONNREFUSED" || error.code === "ENOTFOUND") {
-          setError(
-            "Can't connect with the server... please try after some time"
-          );
+        if (
+          error.code === "ECONNREFUSED" ||
+          error.code === "ENOTFOUND" ||
+          error.code === "ERR_NETWORK"
+        ) {
+          setError("Can't connect with the server.");
           return;
         } else if (error.response?.data?.error?.error?.name === "ZodError") {
           setError(error.response?.data.error.error.issues[0].message);
@@ -83,13 +87,13 @@ function CreateAcc() {
        bg-gradient-to-br from-blue-950 to-blue-500 lg:flex"
       >
         <div>
-          <div className="animate-moveUp absolute top-44 left-36">
+          <div className="animate-moveUp absolute top-44 left-40">
             <img src="/landingpage4.svg" alt="" />
           </div>
 
           <div
-            className="absolute top-52 left-[350px] text-5xl font-bold text-black
-           leading-relaxed animate-moveUp2"
+            className="absolute top-52 exmd:top-48 left-[350px] text-5xl font-bold text-black
+           leading-relaxed animate-moveUp2 whitespace-nowrap"
           >
             Payments Made <br />
             Easy With <br />
@@ -112,7 +116,7 @@ function CreateAcc() {
         className="px-4 pt-2 basis-full sm:basis-3/4 md:basis-3/5 lg:basis-2/5 lg:px-20"
         onSubmit={createACC}
       >
-        <div className="text-center text-xl pb-2 sm:text-2xl">
+        <div className="text-center text-xl sm:text-2xl">
           Open your Account with{" "}
           <span className="text-blue-500 text-xl font-bold sm:text-2xl">
             Pay
@@ -121,9 +125,12 @@ function CreateAcc() {
             TM
           </span>
         </div>
-        {error && (
-          <div className="text-red-600 text-sm text-center">{error}</div>
-        )}
+        <div className="h-4">
+          {error && (
+            <div className="text-red-600 text-sm text-center">{error}</div>
+          )}
+        </div>
+
         <TextInput
           type="string"
           placeholder="Enter your FullName"

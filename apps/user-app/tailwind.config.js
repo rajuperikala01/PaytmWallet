@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        exmd: "1000px",
+      },
       animation: {
         "gradient-diagonal": "slow-gradient 5s ease infinite",
         "layered-gradient": "layered-gradient 20s ease infinite",
@@ -21,7 +24,7 @@ module.exports = {
         moveUp: {
           "0%": {
             opacity: "0",
-            transform: "translateY(100px)",
+            transform: "translateY(150px)",
           },
 
           "100%": {
@@ -32,7 +35,7 @@ module.exports = {
         moveUp2: {
           "0%": {
             opacity: "0",
-            transform: "translateX(-100px)",
+            transform: "translateX(-150px)",
           },
 
           "100%": {
