@@ -1,7 +1,7 @@
 "use client";
 import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createAccountSchema } from "@repo/validation/bankschemas";
 
 interface customer {
@@ -19,6 +19,9 @@ function CreateAcc() {
     mobile: "",
     initialBalance: 0,
   });
+  const [animate, setAnimate] = useState<boolean>(false);
+  const words = ["Fast", "Secure", "Reliable"];
+  const [currentWord, setCurrentWord] = useState(words[0]);
 
   async function createACC(e: React.FormEvent<HTMLFormElement>) {
     setError("");
@@ -71,13 +74,45 @@ function CreateAcc() {
     }
   }
 
+  console.log();
+
   return (
-    <div className="w-full flex justify-center h-screen">
+    <div className="w-full flex h-screen bg-stone-50 items-center justify-center">
+      <div
+        className="basis-3/5 text-white w-full h-full relative overflow-clip hidden
+       bg-gradient-to-br from-blue-950 to-blue-500 lg:flex"
+      >
+        <div>
+          <div className="animate-moveUp absolute top-44 left-36">
+            <img src="/landingpage4.svg" alt="" />
+          </div>
+
+          <div
+            className="absolute top-52 left-[350px] text-5xl font-bold text-black
+           leading-relaxed animate-moveUp2"
+          >
+            Payments Made <br />
+            Easy With <br />
+            <div className="bg-stone-50 inline pr-8">
+              <span className="text-blue-500 font-bold">Pay</span>
+              <span className="text-blue-950 font-bold">TM</span>
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-10 left-10 text-3xl font-bold text-white">
+          PayTM <br />
+          Payments <br />
+          Bank
+        </div>
+        {/* <div className="h-40 w-40 bg-white">
+          <img src="/landingpage2.svg" alt="" />
+        </div> */}
+      </div>
       <form
-        className="w-full px-6 sm:w-3/4 md:w-1/2 lg:w-2/5"
+        className="px-4 pt-2 basis-full sm:basis-3/4 md:basis-3/5 lg:basis-2/5 lg:px-20"
         onSubmit={createACC}
       >
-        <div className="text-center text-xl pt-10 pb-2 sm:text-2xl">
+        <div className="text-center text-xl pb-2 sm:text-2xl">
           Open your Account with{" "}
           <span className="text-blue-500 text-xl font-bold sm:text-2xl">
             Pay
@@ -127,7 +162,7 @@ function CreateAcc() {
         />
         <TextInput
           type="number"
-          placeholder="Enter what ever you Want"
+          placeholder="Enter an Amount"
           label="Initial Balance *"
           onChange={(e) => {
             setcustomerDetails({
@@ -139,7 +174,9 @@ function CreateAcc() {
         />
         <button
           type="submit"
-          className="w-full h-10 mt-10 rounded bg-blue-500 text-white"
+          className="w-full h-10 mt-10 rounded bg-blue-950
+           hover:bg-blue-800 text-white
+           text-sm font-normal tracking-wider"
         >
           Create Account
         </button>

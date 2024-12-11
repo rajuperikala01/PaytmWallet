@@ -71,7 +71,8 @@ export default async function () {
         }
         return (
           <div
-            className="flex justify-between bg-stone-50
+            className="flex justify-between bg-stone-100 hover:transform
+             hover:scale-[1.02] transition-all ease-in-out duration-300
             p-4 rounded-lg gap-2 shadow-sm shadow-gray-400 items-center md:p-3 lg:p-6"
             key={tx.id}
           >

@@ -8,7 +8,7 @@ function Processing() {
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="h-4 w-4 text-yellow-500 group-hover:scale-110"
       >
@@ -17,8 +17,8 @@ function Processing() {
           cy="12"
           r="9"
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <line
           x1="12"

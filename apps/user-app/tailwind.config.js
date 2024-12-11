@@ -13,13 +13,32 @@ module.exports = {
       animation: {
         "gradient-diagonal": "slow-gradient 5s ease infinite",
         "layered-gradient": "layered-gradient 20s ease infinite",
-        "payment-loading": "spinner 1500ms ease-out infinite",
+        "payment-loading": "spinner 1500ms ease-out forwards",
+        moveUp: "moveUp 600ms ease-out",
+        moveUp2: "moveUp2 500ms ease-out",
       },
       keyframes: {
-        "slow-gradient": {
-          "0%": { "background-position": "0% 0%" },
-          "50%": { "background-position": "100% 100%" },
-          "100%": { "background-position": "0% 0%" },
+        moveUp: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(100px)",
+          },
+
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        moveUp2: {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(-100px)",
+          },
+
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
         },
         spinner: {
           "0%": { transform: "rotate(0deg)" },

@@ -69,7 +69,7 @@ export const AddMoney = () => {
   return (
     <Card title="Add Money">
       {error && <div className="text-xl text-red-600">{error}</div>}
-      <div className="w-full">
+      <form className="w-full" onSubmit={handleTransaction}>
         <TextInput
           label="Amount"
           placeholder="Transaction Amount"
@@ -87,11 +87,14 @@ export const AddMoney = () => {
           <option value={SUPPORTED_BANK.id}>Paytm Payments Bank</option>
         </select>
         <div className="flex justify-center pt-4">
-          <Button onClick={handleTransaction}>
+          <button
+            type="submit"
+            className="text-white bg-gray-800 whitespace-nowrap text-sm font-medium hover:bg-gray-900 focus:outline-none focus:ring-4 w-full focus:ring-gray-300 rounded-sm px-5 py-2"
+          >
             {loading ? "Processing..." : "Proceed"}
-          </Button>
+          </button>
         </div>
-      </div>
+      </form>
     </Card>
   );
 };

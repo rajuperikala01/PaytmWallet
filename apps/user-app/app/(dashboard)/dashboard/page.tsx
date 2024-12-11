@@ -3,6 +3,7 @@ import { authOptions } from "../../lib/auth";
 import prisma from "@repo/database/client";
 import LinkIcon from "../../components/MobileBox";
 import { redirect } from "next/navigation";
+import { div } from "framer-motion/client";
 
 export default async function () {
   const session = await getServerSession(authOptions);
@@ -19,69 +20,83 @@ export default async function () {
   if (time >= 18) {
     greet = `Good evening ${session.user.name}`;
   }
-  const user = await prisma.user.findUnique({
-    where: {
-      id: Number(session.user.id),
-    },
-  });
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: Number(session.user.id),
+      },
+    });
 
-  const accountbalance = (user?.Balance || 0) / 100;
+    const accountbalance = (user?.Balance || 0) / 100;
 
-  return (
-    <div>
-      <div
-        className="absolute top-20 left-2 right-2
-       gap-4 block sm:top-24 sm:left-5 sm:right-3 md:top-28 md:right-5 md:left-5 lg:flex lg:top-36 lg:right-24 lg:left-24"
-      >
+    return (
+      <div>
         <div
-          className=" text-blue-950 text-3xl lg:leading-relaxed
-          mb-4 font-bold basis-3/4 pl-2 sm:leading-snug  md:text-4xl md:leading-normal lg:text-5xl"
+          className="absolute top-20 left-2 right-2
+         gap-4 block sm:top-24 sm:left-5 sm:right-3 md:top-28 md:right-5 md:left-5 lg:flex lg:top-36 lg:right-24 lg:left-24"
         >
-          Welcome...
-          <br /> {greet}
-          <div>
+          <div
+            className=" text-blue-950 text-3xl lg:leading-relaxed
+            mb-4 font-bold basis-3/4 pl-2 sm:leading-snug  md:text-4xl md:leading-normal lg:text-5xl"
+          >
+            Welcome...
+            <br /> {greet}
             <div>
-              <div className="basis-1/4 pt-2 text-blue-950 lg:hidden">
-                <div className="text-2xl  font-semibold">Wallet</div>
-                <div className="text-lg mt-2 font-medium">
-                  Balance: <span className="font-bold">{accountbalance}</span>{" "}
-                  INR
+              <div>
+                <div className="basis-1/4 pt-2 text-blue-950 lg:hidden">
+                  <div className="text-2xl  font-semibold">Wallet</div>
+                  <div className="text-lg mt-2 font-medium">
+                    Balance: <span className="font-bold">{accountbalance}</span>{" "}
+                    INR
+                  </div>
                 </div>
-              </div>
-              <div
-                className="w-full flex flex-wrap gap-6 h-[150px]
-                  justify-start
-                  mt-5 lg:h-[180px] md:mt-12"
-              >
-                <LinkIcon
-                  icon={<TransferIcon />}
-                  title="Wallet"
-                  link="/transfer"
-                />
-                <LinkIcon icon={<P2PTransferIcon />} title="Send" link="/p2p" />
-                <LinkIcon
-                  icon={<TransactionsIcon />}
-                  title="History"
-                  link="/transactions"
-                />
-                <LinkIcon
-                  icon={<BankIcon />}
-                  title="GoToBank"
-                  link="/PaymentsBank"
-                />
+                <div
+                  className="w-full flex flex-wrap gap-6 h-[150px]
+                    justify-start
+                    mt-5 lg:h-[180px] md:mt-12"
+                >
+                  <LinkIcon
+                    icon={<TransferIcon />}
+                    title="Wallet"
+                    link="/transfer"
+                  />
+                  <LinkIcon
+                    icon={<P2PTransferIcon />}
+                    title="Send"
+                    link="/p2p"
+                  />
+                  <LinkIcon
+                    icon={<TransactionsIcon />}
+                    title="History"
+                    link="/transactions"
+                  />
+                  <LinkIcon
+                    icon={<BankIcon />}
+                    title="GoToBank"
+                    link="/PaymentsBank"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="lg:basis-1/4 pt-2 text-blue-950 hidden lg:block">
-          <div className="text-2xl  font-semibold">Wallet</div>
-          <div className="text-lg mt-2 font-medium">
-            Balance: <span className="font-semibold">{accountbalance}</span> INR
+          <div className="lg:basis-1/4 pt-2 text-blue-950 hidden lg:block">
+            <div className="text-2xl  font-semibold">Wallet</div>
+            <div className="text-lg mt-2 font-medium">
+              Balance: <span className="font-semibold">{accountbalance}</span>{" "}
+              INR
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error) {
+    // return (
+    //   <div className="flex w-full h-screen items-center justify-center bg-gray-700">
+    //     An Unexpected Error Occurred. <br />
+    //     Please check your Internet
+    //   </div>
+    // );
+  }
 }
 
 function HomeIcon() {
