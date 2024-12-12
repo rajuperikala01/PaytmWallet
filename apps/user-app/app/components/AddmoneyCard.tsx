@@ -21,7 +21,8 @@ export const AddMoney = () => {
   // Added loading state
   const router = useRouter();
 
-  const handleTransaction = async () => {
+  const handleTransaction = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (amount <= 0) {
       setError("Amount must be greater than zero");
       return;
@@ -63,12 +64,17 @@ export const AddMoney = () => {
         error.response?.data?.error ||
           "An unexpected error occurred. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Card title="Add Money">
-      {error && <div className="text-xl text-red-600">{error}</div>}
+      <div className="h-4">
+        {error && <div className="text-md text-red-600">{error}</div>}
+      </div>
+
       <form className="w-full" onSubmit={handleTransaction}>
         <TextInput
           label="Amount"

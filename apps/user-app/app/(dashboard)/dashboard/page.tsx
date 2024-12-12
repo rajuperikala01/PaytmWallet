@@ -4,6 +4,7 @@ import prisma from "@repo/database/client";
 import LinkIcon from "../../components/MobileBox";
 import { redirect } from "next/navigation";
 import { div } from "framer-motion/client";
+import { title } from "process";
 
 export default async function () {
   const session = await getServerSession(authOptions);
@@ -75,6 +76,13 @@ export default async function () {
                     title="GoToBank"
                     link="/PaymentsBank"
                   />
+                  {session.user.bankCustomerId && (
+                    <LinkIcon
+                      icon={<BankIcon />}
+                      title="Add Account"
+                      link="/"
+                    />
+                  )}
                 </div>
               </div>
             </div>

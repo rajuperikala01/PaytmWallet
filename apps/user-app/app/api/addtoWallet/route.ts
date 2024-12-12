@@ -86,7 +86,7 @@ export const POST = async (req: NextRequest) => {
           {
             error: error.response?.data.error,
           },
-          { status: error.status }
+          { status: error.status || 500 }
         );
       }
       return NextResponse.json(
