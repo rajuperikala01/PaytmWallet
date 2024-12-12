@@ -76,13 +76,13 @@ export default async function () {
                     title="GoToBank"
                     link="/PaymentsBank"
                   />
-                  {session.user.bankCustomerId && (
+                  {/* {!session.user.bankCustomerId && (
                     <LinkIcon
                       icon={<BankIcon />}
                       title="Add Account"
                       link="/"
                     />
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
