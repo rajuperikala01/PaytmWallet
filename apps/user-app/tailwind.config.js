@@ -16,16 +16,16 @@ module.exports = {
       animation: {
         "gradient-diagonal": "slow-gradient 5s ease infinite",
         "layered-gradient": "layered-gradient 20s ease infinite",
-        "payment-loading": "spinner 1500ms ease-out forwards",
+        "payment-loading": "spinner 1000ms ease-in infinite",
         moveUp: "moveUp 600ms ease-out",
-        moveUp2: "moveUp2 1000ms ease-out",
+        moveUp2: "moveUp2 600ms ease-out",
         sequential: "sequential 1s ease-out infinite",
       },
       keyframes: {
         moveUp: {
           "0%": {
             opacity: "0",
-            transform: "translateY(150px)",
+            transform: "translateY(50px)",
           },
 
           "100%": {

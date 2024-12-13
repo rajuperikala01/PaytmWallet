@@ -83,7 +83,9 @@ export const AddMoney = () => {
           type="number"
           required={true}
         />
-        <div className="py-2 text-left">Provider Bank</div>
+        <div className="py-2 text-left font-semibold text-sm">
+          Provider Bank
+        </div>
         <select
           className="w-full outline-none p-2 text-gray-600 bg-stone-50"
           onChange={(val) => {

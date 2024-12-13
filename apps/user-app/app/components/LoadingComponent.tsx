@@ -8,12 +8,12 @@ export default function () {
   ];
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center gap-2">
+    <div className="h-screen w-screen flex items-center justify-center">
       {circles.map((circle, index) => (
         <div
           key={index}
           aria-hidden="true"
-          className={`${circle.bgColor} h-5 w-5 rounded-full animate-sequential opacity-0`}
+          className={`${circle.bgColor} h-4 w-4 rounded-full animate-sequential opacity-0`}
           style={{ animationDelay: `${circle.delay}s` }}
         ></div>
       ))}

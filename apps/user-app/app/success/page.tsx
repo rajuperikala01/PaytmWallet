@@ -5,28 +5,24 @@ export default function () {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 2000);
+    return () => clearTimeout(timeout);
   }, []);
   return (
-    <div className="flex justify-center h-screen pt-5 text-center">
-      <div className="rounded-3xl w-1/2 h-4/5 bg-stone-50">
-        {loading ? <Loading /> : <Success />}
-        <Link
-          href={"/dashboard"}
-          className="h-1/6 text-2xl font-bold bg-blue-950 p-4 rounded-lg text-white"
-        >
-          Goto Home
-        </Link>
-      </div>
+    <div
+      className="flex flex-col h-screen pt-10
+     items-center gap-10"
+    >
+      {loading ? <Loading /> : <Success />}
     </div>
   );
 }
 
 function Success() {
   return (
-    <div className="flex flex-col items-center justify-center gap-10 h-5/6">
+    <div className="flex flex-col animate-moveUp items-center justify-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -42,17 +38,28 @@ function Success() {
         />
       </svg>
 
-      <div className="text-xl font-bold">Payment Success</div>
+      <div className="text-xl font-bold text-blue-500">Sent</div>
+      <Link
+        href={"/dashboard"}
+        className="text-sm py-2 px-14 bg-stone-50 mt-5
+           text-black text-center inline-flex justify-center
+            items-center animate-moveUp rounded-lg font-semibold border-2 border-gray-200
+            hover:text-white transition-all duration-300 ease-out hover:bg-blue-950
+      shadow-md 
+        "
+      >
+        Dashboard
+      </Link>
     </div>
   );
 }
 
 function Loading() {
   return (
-    <div className="flex justify-center items-center h-5/6">
-      <div className="h-36 w-36 rounded-full bg-blue-500 flex items-center">
+    <div className="flex animate-moveUp transition-all duration-300 ease-in">
+      <div className="h-28 w-28 rounded-full bg-blue-500 flex items-center">
         <div
-          className="h-32 w-32 rounded-full border-[10px] bg-blue-500
+          className="h-24 w-24 rounded-full border-8 bg-blue-500
        border-t-white border-blue-500 animate-payment-loading m-4 box-border"
         ></div>
       </div>

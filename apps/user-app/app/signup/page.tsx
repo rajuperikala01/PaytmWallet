@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import GradientBackground from "../components/GradientMotion";
+import { useSession } from "next-auth/react";
 
 function page() {
   const router = useRouter();
@@ -16,7 +17,13 @@ function page() {
   });
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState("password");
+  const session = useSession();
 
+  useEffect(() => {
+    if (session.status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [session.status]);
   return (
     <div className="flex min-h-screen w-screen relative">
       <form

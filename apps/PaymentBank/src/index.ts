@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import { bankTransferSchema } from "@repo/validation/bankschemas";
 import paytmTransfer from "./controllers/transValid";
 import transactionFailed from "./controllers/transactionFailed";
+import BankLink from "./controllers/link";
 import cors from "cors";
 
 const app = express();
@@ -22,6 +23,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use("/api/v1/paytmTransfer", paytmTransfer);
 app.use("/api/v1/transactionFailed", transactionFailed);
+app.use("/api/v1/BankLink", BankLink);
 
 app.post("/api/v1/createAccount", async (req, res) => {
   const validatedData = createAccountSchema.safeParse(req.body);

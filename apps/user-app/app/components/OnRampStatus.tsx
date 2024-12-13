@@ -41,7 +41,7 @@ export const OnRampTransactions = ({
               </div>
             </div>
 
-            <div className="flex flex-col justify-center text-end">
+            <div className="flex flex-col justify-center text-end text-sm md:text-mdfont-medium">
               +{t.amount / 100} INR
               <div>
                 {t.status === "Success" && (

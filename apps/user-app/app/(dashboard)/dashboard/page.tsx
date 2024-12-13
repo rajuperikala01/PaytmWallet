@@ -3,8 +3,9 @@ import { authOptions } from "../../lib/auth";
 import prisma from "@repo/database/client";
 import LinkIcon from "../../components/MobileBox";
 import { redirect } from "next/navigation";
-import { div } from "framer-motion/client";
-import { title } from "process";
+import axios, { AxiosError } from "axios";
+import { Button } from "@repo/ui/button";
+import BankLink from "../../components/BankLink";
 
 export default async function () {
   const session = await getServerSession(authOptions);
@@ -44,12 +45,23 @@ export default async function () {
             <br /> {greet}
             <div>
               <div>
-                <div className="basis-1/4 pt-2 text-blue-950 lg:hidden">
-                  <div className="text-2xl  font-semibold">Wallet</div>
-                  <div className="text-lg mt-2 font-medium">
-                    Balance: <span className="font-bold">{accountbalance}</span>{" "}
-                    INR
+                <div
+                  className="basis-1/4 pt-6 text-blue-950 lg:hidden
+                 flex justify-between items-center"
+                >
+                  <div className="text-xl  font-semibold">
+                    Wallet
+                    <div className="text-sm font-medium">
+                      Balance:{" "}
+                      <span className="font-bold text-lg">
+                        {accountbalance}
+                      </span>{" "}
+                      INR
+                    </div>
                   </div>
+                  {!session.user.bankCustomerId && (
+                    <BankLink userId={session.user.id} />
+                  )}
                 </div>
                 <div
                   className="w-full flex flex-wrap gap-6 h-[150px]
@@ -93,17 +105,23 @@ export default async function () {
               Balance: <span className="font-semibold">{accountbalance}</span>{" "}
               INR
             </div>
+            {!session.user.bankCustomerId && (
+              <div>
+                <div>Add account</div>
+                <div></div>
+              </div>
+            )}
           </div>
         </div>
       </div>
     );
   } catch (error) {
-    // return (
-    //   <div className="flex w-full h-screen items-center justify-center bg-gray-700">
-    //     An Unexpected Error Occurred. <br />
-    //     Please check your Internet
-    //   </div>
-    // );
+    return (
+      <div className="flex w-full h-screen items-center justify-center bg-stone-900">
+        An Unexpected Error Occurred. <br />
+        Please check your Internet
+      </div>
+    );
   }
 }
 

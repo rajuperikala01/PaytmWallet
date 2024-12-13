@@ -10,7 +10,7 @@ router.patch("/", async (req, res) => {
       token: token,
     },
     data: {
-      status: "Failure",
+      status: "Failed",
     },
   });
 
