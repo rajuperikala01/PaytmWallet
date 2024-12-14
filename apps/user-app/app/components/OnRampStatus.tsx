@@ -113,7 +113,7 @@ export const OnRampTransactions = ({
                 )}
               </div>
               <div>
-                {t.status === "Failure" && (
+                {t.status === "Failed" && (
                   <div
                     className="text-xs sm:text-sm text-red-600 text-end
                    flex gap-1 justify-end sm:font-medium items-center"

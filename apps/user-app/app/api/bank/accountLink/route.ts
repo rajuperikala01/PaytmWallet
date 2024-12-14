@@ -1,9 +1,12 @@
 import prisma from "@repo/database/client";
 import axios, { AxiosError } from "axios";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-
+import { authOptions } from "../../../lib/auth";
+import { signIn } from "next-auth/react";
 export const POST = async (req: NextRequest) => {
   const userId = await req.json();
+  const session = await getServerSession(authOptions);
   try {
     console.log(userId);
 
@@ -37,7 +40,7 @@ export const POST = async (req: NextRequest) => {
       if (request.status === 200) {
         console.log(200);
         try {
-          await prisma.user.update({
+          const updatedUser = await prisma.user.update({
             where: {
               id: user?.id,
             },
@@ -45,6 +48,8 @@ export const POST = async (req: NextRequest) => {
               bankCustomerId: request.data.customerId,
             },
           });
+
+          await signIn("credentials", { redirect: false });
 
           return NextResponse.json(
             {

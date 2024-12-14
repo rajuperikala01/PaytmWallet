@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
             token: validatedData.data.token,
           },
           data: {
-            status: "Failure",
+            status: "Failed",
           },
         });
         res.status(400).json({
