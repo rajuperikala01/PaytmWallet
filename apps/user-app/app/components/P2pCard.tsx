@@ -83,7 +83,13 @@ function PersontoPerson() {
   }, []);
   return (
     <div>
-      {showPopUp && <PopUp error={error} Closed={() => setShowPopUP(false)} />}
+      {showPopUp && (
+        <PopUp
+          error={error}
+          Closed={() => setShowPopUP(false)}
+          open={showPopUp}
+        />
+      )}
       <form className="basis-full md:basis-1/2" onSubmit={Transfer}>
         <Card title="Transfer">
           <div>
@@ -98,6 +104,7 @@ function PersontoPerson() {
               }
               type="text"
               required={true}
+              disabled={showPopUp}
             />
           </div>
           <div>
@@ -112,13 +119,18 @@ function PersontoPerson() {
               }
               type="number"
               required={true}
+              disabled={showPopUp}
             />
           </div>
 
           <div className="mt-10 md:mt-5">
             <button
               type="submit"
-              className="text-white bg-gray-800 whitespace-nowrap text-sm font-medium hover:bg-gray-900 focus:outline-none focus:ring-4 w-full focus:ring-gray-300 rounded-sm px-5 py-2"
+              disabled={showPopUp}
+              className={`text-white bg-gray-800 whitespace-nowrap text-sm
+               font-medium hover:bg-gray-900 focus:outline-none
+                focus:ring-4 w-full focus:ring-gray-300 rounded-sm
+                 px-5 py-2 ${showPopUp ? "opacity-90" : "opacity-100"}`}
             >
               {processing ? "Processing" : "Send"}
             </button>

@@ -39,7 +39,6 @@ export default async function () {
       createdAt: "desc",
     },
   });
-  console.log(response);
 
   const transactions = response.map((tx) => {
     const sender = tx.senderId === parseInt(session.user.id);

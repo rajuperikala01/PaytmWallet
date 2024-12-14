@@ -78,7 +78,11 @@ export const AddMoney = () => {
       <div className="h-4">
         {showPopUp && (
           <div className="text-md text-red-600">
-            <PopUp error={error} Closed={() => setShowPopUP(false)} />
+            <PopUp
+              error={error}
+              Closed={() => setShowPopUP(false)}
+              open={showPopUp}
+            />
           </div>
         )}
       </div>
@@ -90,6 +94,7 @@ export const AddMoney = () => {
           onChange={(val) => setAmount(parseInt(val))}
           type="number"
           required={true}
+          disabled={showPopUp}
         />
         <div className="py-2 text-left font-semibold text-sm">
           Provider Bank
@@ -105,7 +110,11 @@ export const AddMoney = () => {
         <div className="flex justify-center pt-4">
           <button
             type="submit"
-            className="text-white bg-gray-800 whitespace-nowrap text-sm font-medium hover:bg-gray-900 focus:outline-none focus:ring-4 w-full focus:ring-gray-300 rounded-sm px-5 py-2"
+            disabled={showPopUp}
+            className={`text-white bg-gray-800 whitespace-nowrap text-sm
+            font-medium hover:bg-gray-900 focus:outline-none
+            focus:ring-4 w-full focus:ring-gray-300 rounded-sm
+            px-5 py-2 ${showPopUp ? "opacity-90" : "opacity-100"}`}
           >
             {loading ? "Processing..." : "Proceed"}
           </button>

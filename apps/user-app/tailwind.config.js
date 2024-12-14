@@ -18,7 +18,7 @@ module.exports = {
         "layered-gradient": "layered-gradient 20s ease infinite",
         "payment-loading": "spinner 1000ms ease-in infinite",
         moveUp: "moveUp 600ms ease-out",
-        moveUp2: "moveUp2 300ms ease-out",
+        moveUp2: "moveUp2 200ms ease-out",
         sequential: "sequential 1s ease-out infinite",
       },
       keyframes: {

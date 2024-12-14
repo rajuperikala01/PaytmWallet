@@ -3,9 +3,10 @@ import { ReactNode } from "react";
 interface ButtonProps {
   children: ReactNode;
   onClick: () => void;
+  disabled: boolean;
 }
 
-export const Button = ({ onClick, children }: ButtonProps) => {
+export const Button = ({ onClick, children, disabled }: ButtonProps) => {
   return (
     <button
       onClick={onClick}

@@ -6,12 +6,14 @@ export const TextInput = ({
   label,
   type = "text",
   required,
+  disabled,
 }: {
   placeholder: string;
   onChange: (value: string) => void;
   label: string;
   type: string;
   required: boolean;
+  disabled: boolean;
 }) => {
   return (
     <div className="pt-2">
@@ -23,11 +25,12 @@ export const TextInput = ({
         required={required}
         type={type}
         id="first_name"
-        className="border border-gray-300 text-gray-900
+        className={`border border-gray-300 text-gray-900
         text-sm rounded-sm outline-none focus:ring-blue-500
          focus:border-blue-500 block w-full p-2.5
-         bg-stone-50 placeholder:text-gray-400"
+         bg-stone-50 placeholder:text-gray-400 ${disabled && "opacity-90"}`}
         placeholder={placeholder}
+        disabled={disabled}
       />
     </div>
   );
