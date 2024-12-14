@@ -1,12 +1,9 @@
 "use client";
-
-import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { Select } from "@repo/ui/select";
 import PopUp from "./overlay";
 
 const SUPPORTED_BANK = {
@@ -19,13 +16,14 @@ export const AddMoney = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [bank, setBank] = useState<number | null>(SUPPORTED_BANK.id);
-  // Added loading state
+  const [showPopUp, setShowPopUP] = useState<boolean>(false);
   const router = useRouter();
 
   const handleTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
     if (amount <= 0) {
       setError("Amount must be greater than zero");
+      setShowPopUP(true);
       return;
     }
 
@@ -42,29 +40,34 @@ export const AddMoney = () => {
         router.push("/dashboard");
       } else {
         setError("Transaction Failed. Please try again.");
+        setShowPopUP(true);
       }
     } catch (error: any) {
       if (error instanceof AxiosError) {
         if (error.code === "ECONNREFUSED" || error.code === "ENOTFOUND") {
           setError("An unexpected error occurred. Please try again.");
         }
+        setShowPopUP(true);
         if (error.status === 401) {
           setError(
             error.response?.data?.error.error.issues[0].message ||
               "An unexpected error occurred. Please try again."
           );
+          setShowPopUP(true);
           return;
         }
         setError(
           error.response?.data?.error ||
             "An unexpected error occurred. Please try again."
         );
+        setShowPopUP(true);
         return;
       }
       setError(
         error.response?.data?.error ||
           "An unexpected error occurred. Please try again."
       );
+      setShowPopUP(true);
     } finally {
       setLoading(false);
     }
@@ -73,9 +76,9 @@ export const AddMoney = () => {
   return (
     <Card title="Add Money">
       <div className="h-4">
-        {error && (
+        {showPopUp && (
           <div className="text-md text-red-600">
-            <PopUp error={error} />
+            <PopUp error={error} Closed={() => setShowPopUP(false)} />
           </div>
         )}
       </div>

@@ -38,5 +38,5 @@ export const p2pTransfer = zod.object({
   to: zod
     .string()
     .regex(/^[0-9]{10}$/, "Invalid mobile number. It must be 10 digits."),
-  amount: zod.number().min(1, "Amount should be positive"),
+  amount: zod.number().min(1, "Amount should be greater than Zero"),
 });

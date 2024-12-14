@@ -3,8 +3,6 @@ import { authOptions } from "../../lib/auth";
 import prisma from "@repo/database/client";
 import LinkIcon from "../../components/MobileBox";
 import { redirect } from "next/navigation";
-import axios, { AxiosError } from "axios";
-import { Button } from "@repo/ui/button";
 import BankLink from "../../components/BankLink";
 
 export default async function () {

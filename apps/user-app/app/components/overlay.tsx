@@ -1,27 +1,44 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function PopUp({ error }: { error: string }) {
+export default function PopUp({
+  error,
+  Closed,
+}: {
+  error: string;
+  Closed: () => void;
+}) {
   const [close, setClose] = useState<boolean>(true);
 
   return (
-    <dialog
-      className="fixed top-1/2 bg-stone-50 p-10 shadow-md
-    shadow-black border-1 rounded-lg backdrop-blur-3xl text-end"
-      open={close}
-    >
-      <h1
-        className="text-lg
-       font-medium "
+    close && (
+      <dialog
+        className="fixed top-[220px] bg-stone-100 p-5 shadow-md w-[95%] lg:w-1/3
+    shadow-gray-500 border-1 rounded-lg backdrop-blur animate-moveUp2
+    flex flex-col gap-2 items-end"
+        open={close}
+        onClick={() => {
+          setClose(false);
+          Closed();
+        }}
       >
-        {error}
-      </h1>
-      <div
-        onClick={() => setClose(false)}
-        className="bg-blue-950 text-white p-2 cursor-pointer"
-      >
-        close
-      </div>
-    </dialog>
+        <p
+          className="text-md
+       font-medium text-gray-600"
+        >
+          {error}
+        </p>
+        <div
+          onClick={() => {
+            setClose(false);
+            Closed();
+          }}
+          className="bg-blue-950 text-center text-white py-2 px-3 cursor-pointer
+        inline rounded-sm text-sm"
+        >
+          close
+        </div>
+      </dialog>
+    )
   );
 }

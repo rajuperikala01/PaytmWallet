@@ -1,5 +1,5 @@
 import PopUp from "../components/overlay";
 
 export default function SequentialAnimation() {
-  return <div></div>;
+  return <div>{/* <PopUp error="Insufficient funds" /> */}</div>;
 }
