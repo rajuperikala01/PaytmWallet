@@ -7,6 +7,7 @@ import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { Select } from "@repo/ui/select";
+import PopUp from "./overlay";
 
 const SUPPORTED_BANK = {
   name: "PayTM Wallet",
@@ -72,7 +73,11 @@ export const AddMoney = () => {
   return (
     <Card title="Add Money">
       <div className="h-4">
-        {error && <div className="text-md text-red-600">{error}</div>}
+        {error && (
+          <div className="text-md text-red-600">
+            <PopUp error={error} />
+          </div>
+        )}
       </div>
 
       <form className="w-full" onSubmit={handleTransaction}>

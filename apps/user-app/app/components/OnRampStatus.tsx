@@ -54,13 +54,13 @@ export const OnRampTransactions = ({
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       className="size-6 group-hover:transform group-hover:scale-110"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                       />
                     </svg>
@@ -78,7 +78,7 @@ export const OnRampTransactions = ({
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       className="h-6 w-6 text-yellow-500 group-hover:scale-110"
                     >
@@ -87,8 +87,8 @@ export const OnRampTransactions = ({
                         cy="12"
                         r="9"
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <line
                         x1="12"
@@ -96,8 +96,8 @@ export const OnRampTransactions = ({
                         x2="12"
                         y2="16"
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                       <line
                         x1="12"
@@ -105,8 +105,8 @@ export const OnRampTransactions = ({
                         x2="12"
                         y2="4"
                         stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </div>
@@ -123,7 +123,7 @@ export const OnRampTransactions = ({
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       className="size-6 group-hover:scale-110"
                     >

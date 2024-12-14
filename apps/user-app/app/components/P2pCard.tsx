@@ -5,6 +5,7 @@ import { p2pTransfer } from "@repo/validation/bankschemas";
 import axios, { AxiosError } from "axios";
 import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
+import PopUp from "./overlay";
 
 interface objectP2p {
   to: string;
@@ -77,7 +78,11 @@ function PersontoPerson() {
   return (
     <form className="basis-full md:basis-1/2" onSubmit={Transfer}>
       <Card title="Transfer">
-        {error.length > 0 && <div className="text-red-700">{error}</div>}
+        {error.length > 0 && (
+          <div className="text-red-700">
+            <PopUp error={error} />
+          </div>
+        )}
 
         <div>
           <TextInput
