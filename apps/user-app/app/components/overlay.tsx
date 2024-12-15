@@ -1,9 +1,9 @@
 export default function PopUp({
-  error,
+  message,
   Closed,
   open,
 }: {
-  error: string;
+  message: string;
   Closed: () => void;
   open: boolean;
 }) {
@@ -22,7 +22,7 @@ export default function PopUp({
           className="text-md
        font-medium text-gray-900 text-center"
         >
-          {error}
+          {message}
         </div>
         <div
           onClick={Closed}

@@ -23,12 +23,12 @@ function CreateAcc() {
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
 
   async function createACC(e: React.FormEvent<HTMLFormElement>) {
-    setError("");
     e.preventDefault();
     const validate = createAccountSchema.safeParse(customerDetails);
 
     if (!validate.success) {
       setError(validate.error.errors[0]?.message || "Invalid Fields");
+      setShowPopUp(true);
       return;
     }
     try {
@@ -61,21 +61,22 @@ function CreateAcc() {
           error.code === "ERR_NETWORK"
         ) {
           setError("Can't connect with the server.");
+          setShowPopUp(true);
           return;
         } else if (error.response?.data?.error?.error?.name === "ZodError") {
           setError(error.response?.data.error.error.issues[0].message);
           return;
         } else {
           setError(error.response?.data.error);
+          setShowPopUp(true);
           return;
         }
       }
       setError("An error Occurred.. please try again after some time");
+      setShowPopUp(true);
       return;
     }
   }
-
-  console.log();
 
   return (
     <div className="w-full flex h-screen bg-stone-50 items-center justify-center">
@@ -123,8 +124,12 @@ function CreateAcc() {
           </span>
         </div>
         <div className="h-4">
-          {error && (
-            <div className="text-red-600 text-sm text-center">{error}</div>
+          {showPopUp && error && (
+            <PopUp
+              message={error}
+              Closed={() => setShowPopUp(false)}
+              open={showPopUp}
+            />
           )}
         </div>
 
