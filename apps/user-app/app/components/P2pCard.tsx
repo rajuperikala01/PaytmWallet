@@ -6,6 +6,7 @@ import axios, { AxiosError } from "axios";
 import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
 import PopUp from "./overlay";
+import Loading2 from "./Loading2";
 
 interface objectP2p {
   to: string;
@@ -85,7 +86,7 @@ function PersontoPerson() {
     <div>
       {showPopUp && (
         <PopUp
-          error={error}
+          message={error}
           Closed={() => setShowPopUP(false)}
           open={showPopUp}
         />
@@ -132,7 +133,7 @@ function PersontoPerson() {
                 focus:ring-4 w-full focus:ring-gray-300 rounded-sm 
                  px-5 py-2 ${showPopUp ? "opacity-90" : "opacity-100"}`}
             >
-              {processing ? "Processing" : "Send"}
+              {processing ? <Loading2 /> : "Send"}
             </button>
           </div>
         </Card>

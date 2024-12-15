@@ -4,6 +4,7 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { createAccountSchema } from "@repo/validation/bankschemas";
 import PopUp from "../../components/overlay";
+import Loading2 from "../../components/Loading2";
 
 interface customer {
   email: string;
@@ -21,14 +22,17 @@ function CreateAcc() {
     initialBalance: 0,
   });
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function createACC(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setLoading(true);
     const validate = createAccountSchema.safeParse(customerDetails);
 
     if (!validate.success) {
       setError(validate.error.errors[0]?.message || "Invalid Fields");
       setShowPopUp(true);
+      setLoading(false);
       return;
     }
     try {
@@ -43,14 +47,12 @@ function CreateAcc() {
       );
 
       if (customer.status === 201) {
-        alert(
-          `Created Successfully ${customerDetails.name} with Acc Number ${customer.data.customer.accNumber}`
-        );
         <PopUp
           message={`Created Successfully ${customerDetails.name} with Acc Number ${customer.data.customer.accNumber}`}
           open={showPopUp}
           Closed={() => setShowPopUp(false)}
         />;
+        setLoading(false);
         return;
       }
     } catch (error: any) {
@@ -62,19 +64,25 @@ function CreateAcc() {
         ) {
           setError("Can't connect with the server.");
           setShowPopUp(true);
+          setLoading(false);
           return;
         } else if (error.response?.data?.error?.error?.name === "ZodError") {
           setError(error.response?.data.error.error.issues[0].message);
+          setLoading(false);
           return;
         } else {
           setError(error.response?.data.error);
           setShowPopUp(true);
+          setLoading(false);
           return;
         }
       }
       setError("An error Occurred.. please try again after some time");
       setShowPopUp(true);
+      setLoading(false);
       return;
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -188,10 +196,10 @@ function CreateAcc() {
         <button
           type="submit"
           className="w-full h-10 mt-10 rounded bg-blue-950
-           hover:bg-blue-800 text-white
+           hover:bg-blue-900 text-white
            text-sm font-normal tracking-wider"
         >
-          Create Account
+          {loading ? <Loading2 /> : "Create Account"}
         </button>
       </form>
     </div>

@@ -5,6 +5,7 @@ import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import PopUp from "./overlay";
+import Loading2 from "./Loading2";
 
 const SUPPORTED_BANK = {
   name: "PayTM Wallet",
@@ -37,7 +38,7 @@ export const AddMoney = () => {
       });
 
       if (response.status === 200) {
-        router.push("/dashboard");
+        router.push("/success");
       } else {
         setError("Transaction Failed. Please try again.");
         setShowPopUP(true);
@@ -79,7 +80,7 @@ export const AddMoney = () => {
         {showPopUp && (
           <div className="text-md text-red-600">
             <PopUp
-              error={error}
+              message={error}
               Closed={() => setShowPopUP(false)}
               open={showPopUp}
             />
@@ -114,9 +115,9 @@ export const AddMoney = () => {
             className={`text-white bg-gray-800 whitespace-nowrap text-sm
             font-medium hover:bg-gray-900 focus:outline-none
             focus:ring-4 w-full focus:ring-gray-300 rounded-sm
-            px-5 py-2 ${showPopUp ? "opacity-90" : "opacity-100"}`}
+             h-8 ${showPopUp ? "opacity-90" : "opacity-100"}`}
           >
-            {loading ? "Processing..." : "Proceed"}
+            {loading ? <Loading2 /> : "Proceed"}
           </button>
         </div>
       </form>

@@ -95,7 +95,7 @@ router.post("/", async (req, res) => {
             console.log("webhook if block");
             if (error.code === "ECONNREFUSED" || error.code === "ENOTFOUND") {
               res.status(500).json({
-                error: "Processsing...",
+                error: "Error occurred.. Please try again later",
               });
             } else {
               console.log("ellif block");
