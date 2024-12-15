@@ -20,8 +20,6 @@ export const POST = async (req: NextRequest) => {
 
   const validation = p2pTransfer.safeParse(data);
   if (validation.error) {
-    console.log(validation);
-
     return NextResponse.json(
       {
         error: validation.error.issues[0]?.message,
@@ -31,8 +29,6 @@ export const POST = async (req: NextRequest) => {
   }
 
   try {
-    console.log(session);
-
     const fromUser = await prisma.user.findUniqueOrThrow({
       where: {
         id: Number(session.user.id),
@@ -86,7 +82,6 @@ export const POST = async (req: NextRequest) => {
           number: validation.data.to,
         },
       });
-      console.log(toUser);
 
       try {
         await prisma.$transaction(async (tx) => {

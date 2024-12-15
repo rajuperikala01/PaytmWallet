@@ -3,6 +3,7 @@ import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { createAccountSchema } from "@repo/validation/bankschemas";
+import PopUp from "../../components/overlay";
 
 interface customer {
   email: string;
@@ -19,9 +20,7 @@ function CreateAcc() {
     mobile: "",
     initialBalance: 0,
   });
-  const [animate, setAnimate] = useState<boolean>(false);
-  const words = ["Fast", "Secure", "Reliable"];
-  const [currentWord, setCurrentWord] = useState(words[0]);
+  const [showPopUp, setShowPopUp] = useState<boolean>(false);
 
   async function createACC(e: React.FormEvent<HTMLFormElement>) {
     setError("");
@@ -29,13 +28,10 @@ function CreateAcc() {
     const validate = createAccountSchema.safeParse(customerDetails);
 
     if (!validate.success) {
-      console.log(validate);
       setError(validate.error.errors[0]?.message || "Invalid Fields");
       return;
     }
     try {
-      console.log(customerDetails);
-
       const customer = await axios.post(
         "http://localhost:3010/api/v1/createAccount",
         {
@@ -50,14 +46,15 @@ function CreateAcc() {
         alert(
           `Created Successfully ${customerDetails.name} with Acc Number ${customer.data.customer.accNumber}`
         );
+        <PopUp
+          message={`Created Successfully ${customerDetails.name} with Acc Number ${customer.data.customer.accNumber}`}
+          open={showPopUp}
+          Closed={() => setShowPopUp(false)}
+        />;
         return;
       }
     } catch (error: any) {
-      console.log("hi");
-
       if (error instanceof AxiosError) {
-        console.log(error);
-
         if (
           error.code === "ECONNREFUSED" ||
           error.code === "ENOTFOUND" ||
@@ -141,6 +138,7 @@ function CreateAcc() {
               name: e,
             });
           }}
+          disabled={showPopUp}
           required={true}
         />
         <TextInput
@@ -153,6 +151,7 @@ function CreateAcc() {
               email: e,
             });
           }}
+          disabled={showPopUp}
           required={true}
         />
         <TextInput
@@ -165,6 +164,7 @@ function CreateAcc() {
               mobile: e,
             });
           }}
+          disabled={showPopUp}
           required={true}
         />
         <TextInput
@@ -177,6 +177,7 @@ function CreateAcc() {
               initialBalance: parseInt(e),
             });
           }}
+          disabled={showPopUp}
           required={true}
         />
         <button
