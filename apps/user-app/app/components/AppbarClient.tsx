@@ -41,6 +41,7 @@ function AppbarClient() {
                   router.push("/auth/signin");
                 }
           }
+          disabled={false}
         >
           {session ? "Sign out" : "Sign In"}
         </Button>

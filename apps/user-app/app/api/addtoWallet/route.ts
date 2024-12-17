@@ -48,14 +48,19 @@ export const POST = async (req: NextRequest) => {
       },
     });
     console.log("before bank response");
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        id: Number(session.user.id),
+      },
+    });
     try {
       const bankReq = await axios.post(
         "http://localhost:3010/api/v1/paytmTransfer",
         {
           amount: validatedData.data.amount * 100,
-          from: parseInt(session.user.id),
+          from: Number(session.user.id),
           token: token,
-          customerId: session.user.bankCustomerId,
+          customerId: user.bankCustomerId,
           to: validatedData.data.providerId,
         }
       );

@@ -4,8 +4,9 @@ import prisma from "@repo/database/client";
 import LinkIcon from "../../components/MobileBox";
 import { redirect } from "next/navigation";
 import BankLink from "../../components/BankLink";
+import WalletCard from "../../components/WalletCard";
 
-export default async function () {
+export default async function getServer() {
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect("/auth/signin");
@@ -26,6 +27,7 @@ export default async function () {
         id: Number(session.user.id),
       },
     });
+    console.log(user);
 
     const accountbalance = (user?.Balance || 0) / 100;
 
@@ -43,11 +45,8 @@ export default async function () {
             <br /> {greet}
             <div>
               <div>
-                <div
-                  className="basis-1/4 pt-6 text-blue-950 lg:hidden
-                 flex justify-between items-center"
-                >
-                  <div className="text-xl  font-semibold">
+                <div className="basis-1/4 pt-6 text-blue-950 lg:hidden">
+                  {/* <div className="text-xl font-semibold basis-3/5 sm:basis-4/5">
                     Wallet
                     <div className="text-sm font-medium">
                       Balance:{" "}
@@ -56,10 +55,13 @@ export default async function () {
                       </span>{" "}
                       INR
                     </div>
+                  </div> */}
+                  <WalletCard amount={accountbalance} id={session.user.id} />
+                  <div className="basis-2/5 sm:basis-1/5">
+                    {user && !user.bankCustomerId && (
+                      <BankLink userId={user.id} />
+                    )}
                   </div>
-                  {!session.user.bankCustomerId && (
-                    <BankLink userId={session.user.id} />
-                  )}
                 </div>
                 <div
                   className="w-full flex flex-wrap gap-6 h-[150px]
@@ -86,36 +88,27 @@ export default async function () {
                     title="GoToBank"
                     link="/PaymentsBank"
                   />
-                  {/* {!session.user.bankCustomerId && (
-                    <LinkIcon
-                      icon={<BankIcon />}
-                      title="Add Account"
-                      link="/"
-                    />
-                  )} */}
                 </div>
               </div>
             </div>
           </div>
           <div className="lg:basis-1/4 pt-2 text-blue-950 hidden lg:block">
-            <div className="text-2xl  font-semibold">Wallet</div>
+            {/* <div className="text-2xl  font-semibold">Wallet</div>
             <div className="text-lg mt-2 font-medium">
               Balance: <span className="font-semibold">{accountbalance}</span>{" "}
               INR
+            </div> */}
+            <WalletCard amount={accountbalance} id={session.user.id} />
+            <div className="lg:w-full">
+              {user && !user.bankCustomerId && <BankLink userId={user.id} />}
             </div>
-            {!session.user.bankCustomerId && (
-              <div>
-                <div>Add account</div>
-                <div></div>
-              </div>
-            )}
           </div>
         </div>
       </div>
     );
   } catch (error) {
     return (
-      <div className="flex w-full h-screen items-center justify-center bg-stone-900">
+      <div className="flex w-full h-screen items-center justify-center bg-slate-500">
         An Unexpected Error Occurred. <br />
         Please check your Internet
       </div>

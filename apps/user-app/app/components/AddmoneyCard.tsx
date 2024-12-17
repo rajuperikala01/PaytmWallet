@@ -117,7 +117,7 @@ export const AddMoney = () => {
             focus:ring-4 w-full focus:ring-gray-300 rounded-sm
              h-8 ${showPopUp ? "opacity-90" : "opacity-100"}`}
           >
-            {loading ? <Loading2 /> : "Proceed"}
+            {loading ? <Loading2 bg="white" /> : "Proceed"}
           </button>
         </div>
       </form>

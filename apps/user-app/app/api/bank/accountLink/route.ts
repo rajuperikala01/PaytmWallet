@@ -3,19 +3,16 @@ import axios, { AxiosError } from "axios";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "../../../lib/auth";
-import { signIn } from "next-auth/react";
+
 export const POST = async (req: NextRequest) => {
   const userId = await req.json();
   const session = await getServerSession(authOptions);
   try {
-    console.log(userId);
-
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id: userId.id,
       },
     });
-    console.log(user);
 
     if (user?.bankCustomerId) {
       return NextResponse.json(
@@ -29,16 +26,15 @@ export const POST = async (req: NextRequest) => {
     }
 
     try {
-      console.log("bank");
-
       const request = await axios.post(
         "http://localhost:3010/api/v1/BankLink",
         {
           number: user?.number,
         }
       );
+      console.log(request);
+
       if (request.status === 200) {
-        console.log(200);
         try {
           const updatedUser = await prisma.user.update({
             where: {
@@ -48,8 +44,6 @@ export const POST = async (req: NextRequest) => {
               bankCustomerId: request.data.customerId,
             },
           });
-
-          await signIn("credentials", { redirect: false });
 
           return NextResponse.json(
             {
@@ -81,13 +75,20 @@ export const POST = async (req: NextRequest) => {
             error: error.response?.data.error,
           });
         }
-        return NextResponse.json({
-          error: error.response?.data.error,
-        });
+        return NextResponse.json(
+          {
+            error: error.response?.data.error,
+          },
+          { status: error.response?.status }
+        );
       }
-      return NextResponse.json({
-        error: "An Unexpected Error Occurred Please try again after some time",
-      });
+      return NextResponse.json(
+        {
+          error:
+            "An Unexpected Error Occurred Please try again after some time",
+        },
+        { status: 500 }
+      );
     }
   } catch (error) {
     return NextResponse.json(

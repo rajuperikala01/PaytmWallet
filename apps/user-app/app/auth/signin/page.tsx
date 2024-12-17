@@ -22,6 +22,7 @@ function Login() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
     setLoading(true);
     const result = await signIn("credentials", {
       redirect: false,
@@ -62,9 +63,11 @@ function Login() {
           Welcome back to PayTM! <br />
           Login to your account
         </div>
-        {error && (
-          <div className="mb-4 text-red-600 text-sm">{error}</div> // Error message
-        )}
+        <div className="h-5">
+          {error && (
+            <div className="mb-4 text-red-600 text-sm">{error}</div> // Error message
+          )}
+        </div>
         <div className="w-full">
           <label htmlFor="">Email:</label>
           <br />

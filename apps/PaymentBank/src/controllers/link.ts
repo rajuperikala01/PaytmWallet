@@ -1,7 +1,6 @@
 import prisma from "@repo/database/client";
 import express from "express";
 import zod from "zod";
-import errorMap from "zod/locales/en.js";
 
 const mobile = zod.object({
   number: zod.string().regex(/^\d{10}$/, {
@@ -30,7 +29,8 @@ router.post("/", async (req: express.Request, res: express.Response) => {
       });
     } catch (error) {
       res.status(400).json({
-        error: "Didn't find any accounts with this mobile number",
+        error:
+          "Didn't find any accounts with this mobile number in selected bank. Open an account to continue",
       });
     }
   }

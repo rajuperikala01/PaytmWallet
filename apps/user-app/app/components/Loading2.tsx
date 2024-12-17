@@ -1,4 +1,4 @@
-export default function () {
+export default function ({ bg }: { bg: string }) {
   const circles = [
     { delay: 0 },
     { delay: 0.1 },
@@ -12,7 +12,7 @@ export default function () {
         <div
           key={index}
           aria-hidden="true"
-          className={`h-2 w-2 rounded-full animate-sequential opacity-0 bg-white`}
+          className={`h-2 w-2 rounded-full animate-sequential opacity-0 bg-${bg}`}
           style={{ animationDelay: `${circle.delay}s` }}
         ></div>
       ))}

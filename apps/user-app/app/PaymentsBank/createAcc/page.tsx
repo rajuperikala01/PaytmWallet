@@ -199,7 +199,7 @@ function CreateAcc() {
            hover:bg-blue-900 text-white
            text-sm font-normal tracking-wider"
         >
-          {loading ? <Loading2 /> : "Create Account"}
+          {loading ? <Loading2 bg="white" /> : "Create Account"}
         </button>
       </form>
     </div>

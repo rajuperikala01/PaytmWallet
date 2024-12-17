@@ -9,7 +9,7 @@ router.post("/", async (req, res) => {
   console.log("bank response received");
   const validatedData = addMoneySchema.safeParse(req.body);
   if (!validatedData.success) {
-    console.log("validation block");
+    console.log(validatedData.error);
 
     res.status(401).json({
       error: validatedData,

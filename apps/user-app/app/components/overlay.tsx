@@ -2,10 +2,12 @@ export default function PopUp({
   message,
   Closed,
   open,
+  textSize,
 }: {
   message: string;
   Closed: () => void;
   open: boolean;
+  textSize?: string;
 }) {
   return (
     <>
@@ -19,8 +21,8 @@ export default function PopUp({
         open={open}
       >
         <div
-          className="text-md
-       font-medium text-gray-900 text-center"
+          className={`${textSize ? textSize : "text-md"} 
+       font-medium text-gray-900 text-center`}
         >
           {message}
         </div>

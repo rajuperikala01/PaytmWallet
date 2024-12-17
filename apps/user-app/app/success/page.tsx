@@ -1,15 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 export default function () {
   const [loading, setLoading] = useState<boolean>(true);
-
+  const router = useRouter();
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(false);
     }, 2000);
     return () => clearTimeout(timeout);
   }, []);
+
   return (
     <div
       className="flex flex-col h-screen pt-10
@@ -21,6 +23,11 @@ export default function () {
 }
 
 function Success() {
+  const router = useRouter();
+  const handleRefresh = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default behavior of Link
+    router.push("/dashboard?refresh=true"); // Navigate to the same path to trigger refresh
+  };
   return (
     <div className="flex flex-col animate-moveUp items-center justify-center">
       <svg
@@ -39,17 +46,17 @@ function Success() {
       </svg>
 
       <div className="text-xl font-bold text-blue-500">Sent</div>
-      <Link
-        href={"/dashboard"}
+      <div
         className="text-sm py-2 px-14 bg-stone-50 mt-5
            text-black text-center inline-flex justify-center
             items-center animate-moveUp rounded-lg font-semibold border-2 border-gray-200
             hover:text-white transition-all duration-300 ease-out hover:bg-blue-950
       shadow-md 
         "
+        onClick={handleRefresh}
       >
         Dashboard
-      </Link>
+      </div>
     </div>
   );
 }
