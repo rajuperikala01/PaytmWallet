@@ -23,7 +23,7 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
 
   return (
     <div
-      className="bg-stone-50 w-full px-6 mt-6 py-4 rounded-sm
+      className="bg-stone-50 w-[97%] lg:w-full px-6 mt-2 py-4 rounded-sm
      shadow-sm shadow-blue-950"
     >
       <div

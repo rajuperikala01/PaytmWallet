@@ -23,14 +23,11 @@ function BankLink({ userId }: { userId: number }) {
       const linked = await axios.post("/api/bank/accountLink", {
         id: userId,
       });
-      console.log(linked);
 
       if (linked.status === 200) {
-        router.refresh();
         setLoading(false);
         setError("successfully Linked your account with paytm");
         setShowPopUp(true);
-        // router.push("/accountLink/successful");
       }
     } catch (error: any) {
       setLoading(false);
@@ -74,15 +71,18 @@ function BankLink({ userId }: { userId: number }) {
         <PopUp
           message={error}
           open={showPopUp}
-          Closed={() => setShowPopUp(false)}
+          Closed={() => {
+            setShowPopUp(false);
+            router.refresh();
+          }}
           textSize="text-sm"
         />
       )}
       <div
-        className="lg:flex justify-between w-full
-               mt-5 items-center bg-stone-50 px-4 py-2 shadow-sm shadow-blue-950 rounded-md
+        className="flex justify-between w-full
+              lg:mt-5 mb-5 items-center bg-stone-50 px-4 py-2 shadow-sm shadow-blue-950 rounded-md
               cursor-pointer hover:bg-blue-950 hover:text-stone-50 group text-blue-950
-              transition-all duration-300 ease-out hidden"
+              transition-all duration-300 ease-out"
         onClick={handleLinking}
       >
         <div
@@ -125,7 +125,7 @@ function BankLink({ userId }: { userId: number }) {
           </svg>
         </div>
       </div>
-      <div
+      {/* <div
         className="lg:hidden flex items-center mt-4
        justify-end gap-1 rounded-sm text-xs bg-stone-50
         cursor-pointer hover:bg-blue-800 text-blue-950"
@@ -151,7 +151,7 @@ function BankLink({ userId }: { userId: number }) {
             />
           </svg>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
 import PopUp from "../../components/overlay";
+import BankLink from "../../components/BankLink";
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -44,9 +45,18 @@ async function getOnRampTransactions() {
 }
 
 export default async function () {
-  const balance = await getBalance();
   const transactions = await getOnRampTransactions();
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/auth/signin");
+  }
+  const user = await prisma.user.findUnique({
+    where: {
+      id: parseInt(session?.user?.id),
+    },
+  });
 
+  const balance = user && user?.Balance / 100;
   return (
     <div className="md:px-10 absolute top-20 left-0 right-0 pt-5">
       {/* <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
@@ -57,8 +67,12 @@ export default async function () {
           <AddMoney />
         </div>
         <div className="md:col-start-3 md:col-end-6">
-          <BalanceCard amount={balance.amount} />
-          <div className="pt-10">
+          <div className="lg:hidden">
+            <BankLink userId={Number(session.user.id)} />
+          </div>
+          <BalanceCard amount={balance || 0} />
+
+          <div className="">
             <OnRampTransactions transactions={transactions} />
           </div>
         </div>

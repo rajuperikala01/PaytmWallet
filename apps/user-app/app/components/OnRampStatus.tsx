@@ -23,7 +23,7 @@ export const OnRampTransactions = ({
       <div className="md:px-4">
         {transactions.map((t) => (
           <div
-            className="group flex justify-between bg-stone-100 p-4 mt-4 rounded-lg shadow-md items-center"
+            className="group flex justify-between bg-stone-100 p-4 mt-2 sm:mt-4 rounded-lg shadow-md items-center"
             key={t.id}
           >
             <div>

@@ -38,11 +38,12 @@ export default async function getServer() {
          gap-4 block sm:top-24 sm:left-5 sm:right-3 md:top-28 md:right-5 md:left-5 lg:flex lg:top-36 lg:right-24 lg:left-24"
         >
           <div
-            className=" text-blue-950 text-3xl lg:leading-relaxed
+            className=" text-blue-950 text-4xl lg:leading-relaxed
             mb-4 font-bold basis-3/4 pl-2 sm:leading-snug  md:text-4xl md:leading-normal lg:text-5xl"
           >
             Welcome...
-            <br /> {greet}
+            <br />{" "}
+            <div className="tracking-widest sm:tracking-normal">{greet}</div>
             <div>
               <div>
                 <div className="basis-1/4 pt-6 text-blue-950 lg:hidden">
@@ -57,11 +58,11 @@ export default async function getServer() {
                     </div>
                   </div> */}
                   <WalletCard amount={accountbalance} id={session.user.id} />
-                  <div className="basis-2/5 sm:basis-1/5">
+                  {/* <div className="basis-2/5 sm:basis-1/5">
                     {user && !user.bankCustomerId && (
                       <BankLink userId={user.id} />
                     )}
-                  </div>
+                  </div> */}
                 </div>
                 <div
                   className="w-full flex flex-wrap gap-6 h-[150px]
