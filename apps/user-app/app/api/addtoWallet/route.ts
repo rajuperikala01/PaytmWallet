@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest) => {
           amount: validatedData.data.amount * 100,
           from: Number(session.user.id),
           token: token,
-          customerId: user.bankCustomerId,
+          customerId: user.bankCustomerId || undefined,
           to: validatedData.data.providerId,
         }
       );

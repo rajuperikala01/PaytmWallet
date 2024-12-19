@@ -27,7 +27,10 @@ export const bankTransferSchema = zod.object({
 export const addMoneySchema = zod.object({
   from: zod.number().min(1, "Id should be number and cannot be zero"),
   customerId: zod
-    .number({ required_error: "Check you didn't linked your bank with Paytm" })
+    .number({
+      required_error:
+        "you didn't linked your bank.Please link your bank with Paytm",
+    })
     .min(1, "Id should be number and cannot be zero"),
   amount: zod.number().min(1, "Amount should be positive"),
   token: zod.string(),

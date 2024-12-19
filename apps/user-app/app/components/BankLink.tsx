@@ -79,8 +79,8 @@ function BankLink({ userId }: { userId: number }) {
         />
       )}
       <div
-        className="flex justify-between w-full
-              lg:mt-5 mb-5 items-center bg-stone-50 px-4 py-2 shadow-sm shadow-blue-950 rounded-md
+        className="flex justify-between w-[97%] lg:w-full
+              mt-5 mb-5 items-center bg-stone-50 px-4 py-2 shadow-sm shadow-blue-950 rounded-md
               cursor-pointer hover:bg-blue-950 hover:text-stone-50 group text-blue-950
               transition-all duration-300 ease-out"
         onClick={handleLinking}

@@ -7,6 +7,7 @@ import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
 import PopUp from "../../components/overlay";
 import BankLink from "../../components/BankLink";
+import WalletCard from "../../components/WalletCard";
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -56,22 +57,24 @@ export default async function () {
     },
   });
 
-  const balance = user && user?.Balance / 100;
+  const balance = (user && user?.Balance / 100) || 0;
   return (
-    <div className="md:px-10 absolute top-20 left-0 right-0 pt-5">
+    <div className="md:px-10 absolute top-14 sm:top-20 left-0 right-0 sm:pt-5">
       {/* <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
         Add to Wallet
       </div> */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-4 p-2 md:mt-4">
-        <div className="md:col-start-1 md:col-end-3 sm:pt-10">
+        <div className="md:col-start-1 md:col-end-3">
           <AddMoney />
+          {!user?.bankCustomerId && (
+            <p className="text-xs pt-2 ml-2 text-blue-950">
+              *Make sure you added your bank account to Wallet before Adding
+              Money to your Wallet
+            </p>
+          )}
         </div>
         <div className="md:col-start-3 md:col-end-6">
-          <div className="lg:hidden">
-            <BankLink userId={Number(session.user.id)} />
-          </div>
-          <BalanceCard amount={balance || 0} />
-
+          <WalletCard amount={balance} id={session.user.id} />
           <div className="">
             <OnRampTransactions transactions={transactions} />
           </div>

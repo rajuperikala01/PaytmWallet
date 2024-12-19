@@ -75,18 +75,16 @@ export const AddMoney = () => {
   };
 
   return (
-    <Card title="Add Money">
-      <div className="h-4">
-        {showPopUp && (
-          <div className="text-md text-red-600">
-            <PopUp
-              message={error}
-              Closed={() => setShowPopUP(false)}
-              open={showPopUp}
-            />
-          </div>
-        )}
-      </div>
+    <Card title="Add to Wallet">
+      {showPopUp && (
+        <div className="text-md text-red-600">
+          <PopUp
+            message={error}
+            Closed={() => setShowPopUP(false)}
+            open={showPopUp}
+          />
+        </div>
+      )}
 
       <form className="w-full" onSubmit={handleTransaction}>
         <TextInput

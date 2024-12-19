@@ -16,8 +16,8 @@ export default function LinkIcon({
   return (
     <Link
       href={link}
-      className="group h-full w-5/12 px-4 flex items-start gap-0 hover:gap-2
-      rounded-3xl bg-stone-50 justify-center flex-col lg:w-1/5 md:w-1/5
+      className="group h-full w-[45%] px-4 flex items-start gap-0 hover:gap-2
+      rounded-3xl bg-stone-50 justify-center flex-col sm:w-[22%] md:w-[22%] lg:w-1/5
       transition-all duration-300 ease-out hover:bg-blue-950
       shadow-md hover:shadow-md shadow-gray-400"
     >

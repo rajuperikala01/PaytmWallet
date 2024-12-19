@@ -39,7 +39,7 @@ export default async function getServer() {
         >
           <div
             className=" text-blue-950 text-4xl lg:leading-relaxed
-            mb-4 font-bold basis-3/4 pl-2 sm:leading-snug  md:text-4xl md:leading-normal lg:text-5xl"
+            mb-4 font-bold basis-2/3 pl-2 sm:leading-snug  md:text-4xl md:leading-normal lg:text-5xl"
           >
             Welcome...
             <br />{" "}
@@ -47,25 +47,15 @@ export default async function getServer() {
             <div>
               <div>
                 <div className="basis-1/4 pt-6 text-blue-950 lg:hidden">
-                  {/* <div className="text-xl font-semibold basis-3/5 sm:basis-4/5">
-                    Wallet
-                    <div className="text-sm font-medium">
-                      Balance:{" "}
-                      <span className="font-bold text-lg">
-                        {accountbalance}
-                      </span>{" "}
-                      INR
-                    </div>
-                  </div> */}
                   <WalletCard amount={accountbalance} id={session.user.id} />
-                  {/* <div className="basis-2/5 sm:basis-1/5">
+                  <div className="basis-2/5 sm:basis-1/5">
                     {user && !user.bankCustomerId && (
                       <BankLink userId={user.id} />
                     )}
-                  </div> */}
+                  </div>
                 </div>
                 <div
-                  className="w-full flex flex-wrap gap-6 h-[150px]
+                  className="w-full flex flex-wrap gap-x-4 gap-y-2 sm:gap-6 h-[150px]
                     justify-start
                     mt-5 lg:h-[180px] md:mt-12"
                 >
@@ -93,12 +83,7 @@ export default async function getServer() {
               </div>
             </div>
           </div>
-          <div className="lg:basis-1/4 pt-2 text-blue-950 hidden lg:block">
-            {/* <div className="text-2xl  font-semibold">Wallet</div>
-            <div className="text-lg mt-2 font-medium">
-              Balance: <span className="font-semibold">{accountbalance}</span>{" "}
-              INR
-            </div> */}
+          <div className="lg:basis-1/3 pt-2 text-blue-950 hidden lg:block">
             <WalletCard amount={accountbalance} id={session.user.id} />
             <div className="lg:w-full">
               {user && !user.bankCustomerId && <BankLink userId={user.id} />}
