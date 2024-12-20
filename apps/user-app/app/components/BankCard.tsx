@@ -3,6 +3,8 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import PopUp from "./overlay";
 import Loading2 from "./Loading2";
+import Refresh from "./Refresh";
+import { div } from "framer-motion/client";
 
 function BankCard({ userId }: { userId: number }) {
   const [balance, setBalance] = useState<number | null>(null);
@@ -13,7 +15,7 @@ function BankCard({ userId }: { userId: number }) {
   async function getBalance() {
     try {
       setLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const response = await axios.get(
         "http://localhost:3010/api/v1/getBalance",
@@ -59,6 +61,7 @@ function BankCard({ userId }: { userId: number }) {
           Paytm <br />
           Payments Bank
         </div>
+
         {!balance ? (
           <button
             className={`bg-blue-950 text-xs text-stone-50 ${loading ? "px-6 py-3" : "px-4 py-2"}`}
@@ -67,7 +70,15 @@ function BankCard({ userId }: { userId: number }) {
             {loading ? <Loading2 bg="white" /> : "Get Balance"}
           </button>
         ) : (
-          <div className="text-base font-medium">{balance}.00 INR</div>
+          <div>
+            <div className="text-base font-medium flex gap-2 h-full">
+              {balance}.00 INR
+              <div onClick={getBalance} className="cursor-pointer">
+                <Refresh />
+              </div>
+            </div>
+            {loading && <Loading2 bg="blue-950" />}
+          </div>
         )}
       </div>
     </div>

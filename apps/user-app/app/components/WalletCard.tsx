@@ -33,11 +33,11 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
           Wallet
           <div className="text-sm font-medium flex items-center gap-2 whitespace-nowrap">
             Available Balance:{" "}
-            <span className="font-medium text-lg">{balance}.00</span> INR
+            <span className="font-medium text-base">{balance}.00</span> INR
           </div>
           <div className="text-sm font-medium flex items-center gap-2 whitespace-nowrap">
             Total Balance:{" "}
-            <span className="font-medium text-lg">{balance}.00</span> INR
+            <span className="font-medium text-base">{balance}.00</span> INR
           </div>
         </div>
       </div>
