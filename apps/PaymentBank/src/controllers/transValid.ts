@@ -30,17 +30,10 @@ router.post("/", async (req, res) => {
         console.log("if block");
         console.log(customer.balance, validatedData.data.amount);
 
-        // await axios.patch("http://localhost:3002/api/v1/insufficientFunds", {
-        //   token: validatedData.data.token,
-        // });
-        await prisma.onRampTransaction.update({
-          where: {
-            token: validatedData.data.token,
-          },
-          data: {
-            status: "Failed",
-          },
+        await axios.patch("http://localhost:3002/api/v2/insufficientfunds", {
+          token: validatedData.data.token,
         });
+
         res.status(400).json({
           error: "Insufficient funds",
         });
