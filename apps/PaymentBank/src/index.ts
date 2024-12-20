@@ -7,6 +7,7 @@ import paytmTransfer from "./controllers/transValid";
 import transactionFailed from "./controllers/transactionFailed";
 import BankLink from "./controllers/link";
 import cors from "cors";
+import getbalance from "./controllers/balance";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(cors(corsOptions));
 app.use("/api/v1/paytmTransfer", paytmTransfer);
 app.use("/api/v1/transactionFailed", transactionFailed);
 app.use("/api/v1/BankLink", BankLink);
+app.use("api/v1/getBalance", getbalance);
 
 app.post("/api/v1/createAccount", async (req, res) => {
   const validatedData = createAccountSchema.safeParse(req.body);

@@ -5,6 +5,7 @@ import LinkIcon from "../../components/MobileBox";
 import { redirect } from "next/navigation";
 import BankLink from "../../components/BankLink";
 import WalletCard from "../../components/WalletCard";
+import BankCard from "../../components/BankCard";
 
 export default async function getServer() {
   const session = await getServerSession(authOptions);
@@ -49,8 +50,10 @@ export default async function getServer() {
                 <div className="basis-1/4 pt-6 text-blue-950 lg:hidden">
                   <WalletCard amount={accountbalance} id={session.user.id} />
                   <div className="basis-2/5 sm:basis-1/5">
-                    {user && !user.bankCustomerId && (
+                    {user && !user.bankCustomerId ? (
                       <BankLink userId={user.id} />
+                    ) : (
+                      <BankCard />
                     )}
                   </div>
                 </div>

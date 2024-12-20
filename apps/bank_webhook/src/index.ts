@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import prisma from "@repo/database/client";
 import { transferSchema } from "@repo/validation/transferschema";
 import dotenv from "dotenv";
@@ -7,7 +7,7 @@ app.use(express.json());
 dotenv.config();
 
 app.post(
-  "/hdfcWebhook",
+  "api/v2/hdfcWebhook",
   async (req: express.Request, res: express.Response) => {
     console.log("webhook request received");
     const validatedData = transferSchema.safeParse(req.body);
@@ -26,7 +26,7 @@ app.post(
         if (
           transactionDetails?.status === "Success" ||
           !transactionDetails ||
-          transactionDetails.status === "Failure"
+          transactionDetails.status === "Failed"
         ) {
           console.log("if after transactionDetails");
           res.status(403).json({
@@ -82,6 +82,18 @@ app.post(
     }
   }
 );
+
+app.post("api/v2/insufficientfunds", async (req: Request, res: Response) => {
+  const token: string = req.body;
+  await prisma.onRampTransaction.update({
+    where: {
+      token: token,
+    },
+    data: {
+      status: "Failed",
+    },
+  });
+});
 
 const port = process.env.PORT || 3050;
 console.log(process.env.PORT);

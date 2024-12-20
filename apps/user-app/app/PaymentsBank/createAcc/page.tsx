@@ -119,11 +119,15 @@ function CreateAcc() {
         </div> */}
       </div>
       <form
-        className="px-4 pt-2 basis-full sm:basis-3/4 md:basis-3/5 lg:basis-2/5 lg:px-20"
+        className="px-4 sm:pt-2 basis-full sm:basis-3/4
+         md:basis-3/5 lg:basis-2/5 lg:px-20"
         onSubmit={createACC}
       >
-        <div className="text-center text-xl sm:text-2xl">
-          Open your Account with{" "}
+        <div
+          className="text-center text-xl font-medium
+         sm:text-2xl text-blue-950"
+        >
+          Open your Account with <br />
           <span className="text-blue-500 text-xl font-bold sm:text-2xl">
             Pay
           </span>

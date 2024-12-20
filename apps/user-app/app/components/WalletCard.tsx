@@ -26,7 +26,7 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
   return (
     <div
       className="bg-stone-50 w-[97%] lg:w-full px-3 sm:px-6 mt-2 py-4 rounded-sm
-     shadow-sm shadow-gray-700"
+     shadow-sm shadow-gray-500"
     >
       <div
         className="basis-1/4 text-blue-950
