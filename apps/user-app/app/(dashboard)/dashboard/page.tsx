@@ -28,10 +28,9 @@ export default async function getServer() {
         id: Number(session.user.id),
       },
     });
-    console.log(user);
+    console.log(user?.bankCustomerId);
 
     const accountbalance = (user?.Balance || 0) / 100;
-
     return (
       <div>
         <div
@@ -53,7 +52,10 @@ export default async function getServer() {
                     {user && !user?.bankCustomerId ? (
                       <BankLink userId={session.user.id} />
                     ) : (
-                      <BankCard />
+                      user &&
+                      user.bankCustomerId && (
+                        <BankCard userId={user.bankCustomerId} />
+                      )
                     )}
                   </div>
                 </div>
@@ -92,7 +94,8 @@ export default async function getServer() {
               {user && !user.bankCustomerId ? (
                 <BankLink userId={user.id} />
               ) : (
-                <BankCard />
+                user &&
+                user.bankCustomerId && <BankCard userId={user.bankCustomerId} />
               )}
             </div>
           </div>

@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
         try {
           console.log("webhook block");
           const webhook = await axios.post(
-            "http://localhost:3002/hdfcWebhook",
+            "http://localhost:3002/api/v2/hdfcWebhook",
             {
               token: validatedData.data.token,
               amount: validatedData.data.amount,

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Loading2 from "./Loading2";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -13,8 +12,6 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
   async function getBalance() {
     const response = await axios.get(`/api/getBalance?id=${id}`);
     if (response.status === 200) {
-      console.log(response);
-
       return setBalance(response.data.Balance);
     }
     return;
@@ -36,11 +33,11 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
           Wallet
           <div className="text-sm font-medium flex items-center gap-2 whitespace-nowrap">
             Available Balance:{" "}
-            <span className="font-bold text-lg">{balance}</span> INR
+            <span className="font-medium text-lg">{balance}.00</span> INR
           </div>
           <div className="text-sm font-medium flex items-center gap-2 whitespace-nowrap">
-            Total Balance: <span className="font-bold text-lg">{balance}</span>{" "}
-            INR
+            Total Balance:{" "}
+            <span className="font-medium text-lg">{balance}.00</span> INR
           </div>
         </div>
       </div>
