@@ -29,14 +29,24 @@ router.post("/", async (req, res) => {
       if (customer && customer.balance < validatedData.data.amount) {
         console.log("if block");
         console.log(customer.balance, validatedData.data.amount);
+        try {
+          const response = await axios.patch(
+            "http://localhost:3002/api/v2/insufficientfunds",
+            {
+              token: validatedData.data.token,
+            }
+          );
 
-        await axios.patch("http://localhost:3002/api/v2/insufficientfunds", {
-          token: validatedData.data.token,
-        });
-
-        res.status(400).json({
-          error: "Insufficient funds",
-        });
+          if (response.status === 200) {
+            res.status(400).json({
+              error: "Insufficient funds",
+            });
+          }
+        } catch (error) {
+          res.status(400).json({
+            error: "Insufficient funds",
+          });
+        }
       } else {
         await prisma.$transaction(async (tx) => {
           console.log("hi");

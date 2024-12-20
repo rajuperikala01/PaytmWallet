@@ -7,16 +7,11 @@ app.use(express.json());
 dotenv.config();
 
 app.post(
-  "api/v2/hdfcWebhook",
+  "/api/v2/hdfcWebhook",
   async (req: express.Request, res: express.Response) => {
-    console.log("webhook request received");
     const validatedData = transferSchema.safeParse(req.body);
     if (validatedData.success) {
-      console.log("validation success");
-      console.log(validatedData.data);
-
       try {
-        console.log("tryblock");
         const transactionDetails = await prisma.onRampTransaction.findUnique({
           where: {
             token: validatedData.data.token,
@@ -36,7 +31,6 @@ app.post(
           transactionDetails.userId === validatedData.data.userId &&
           transactionDetails.amount === validatedData.data.amount
         ) {
-          console.log("user update block");
           await prisma.user.update({
             where: {
               id: transactionDetails.userId,
@@ -47,7 +41,6 @@ app.post(
               },
             },
           });
-          console.log("onRampTransaction update block");
           await prisma.onRampTransaction.update({
             where: {
               token: validatedData.data.token,
@@ -56,14 +49,11 @@ app.post(
               status: "Success",
             },
           });
-          console.log("success");
 
           res.status(200).json({
             message: "Captured",
           });
         } else {
-          console.log("User not found/Amount different from trasaction Amount");
-
           res.status(403).json({
             message: "User not found/Amount different from trasaction Amount",
           });
@@ -74,7 +64,6 @@ app.post(
         });
       }
     } else {
-      console.log(validatedData.error);
       res.status(401).json({
         message: "Validation Error",
         error: validatedData.error,
@@ -83,8 +72,9 @@ app.post(
   }
 );
 
-app.post("api/v2/insufficientfunds", async (req: Request, res: Response) => {
-  const token: string = req.body;
+app.patch("/api/v2/insufficientfunds", async (req: Request, res: Response) => {
+  const token: string = req.body.token;
+
   await prisma.onRampTransaction.update({
     where: {
       token: token,
@@ -93,10 +83,13 @@ app.post("api/v2/insufficientfunds", async (req: Request, res: Response) => {
       status: "Failed",
     },
   });
+
+  res.status(200).json({
+    message: "Updated successfully",
+  });
 });
 
 const port = process.env.PORT || 3050;
-console.log(process.env.PORT);
 
 app.listen(port, () => {
   console.log(`Server Listening on ${port} port`);
