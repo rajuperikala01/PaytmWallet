@@ -2,11 +2,11 @@
 import axios, { AxiosError } from "axios";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import PopUp from "./overlay";
-import Loading2 from "./Loading2";
 import Refresh from "./Refresh";
 import PlusIcon from "./PlusIcon";
 import Minus from "./Minus";
-import dotenv from "dotenv";
+
+import Loading3 from "./Loading3";
 
 function BankCard({ userId }: { userId: number }) {
   const [balance, setBalance] = useState<number | null>(null);
@@ -14,7 +14,7 @@ function BankCard({ userId }: { userId: number }) {
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [deposit, setDeposit] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<number | null>(null);
   const [loading2, setLoading2] = useState<boolean>(false);
   const input = useRef();
 
@@ -49,7 +49,6 @@ function BankCard({ userId }: { userId: number }) {
       setShowPopUp(true);
     } finally {
       setLoading(false);
-      setAmount(0);
     }
   }
 
@@ -73,9 +72,9 @@ function BankCard({ userId }: { userId: number }) {
       );
 
       if (response.status === 200) {
-        setError(`Successfully deposited ${amount} to your account`);
+        setError(`Successfully deposited ${amount} rupees to your account`);
         setShowPopUp(true);
-
+        setAmount(null);
         return;
       }
     } catch (error) {
@@ -96,7 +95,7 @@ function BankCard({ userId }: { userId: number }) {
       return;
     } finally {
       setLoading2(false);
-      setAmount(0);
+      setAmount(null);
     }
   }
   return (
@@ -120,20 +119,23 @@ function BankCard({ userId }: { userId: number }) {
       </div>
 
       <div className="flex justify-between items-center bg-stone-50 px-1 w-full">
-        <div className="text-sm font-semibold">
+        <div className="text-sm font-semibold basis-[70%]">
           Paytm <br />
           Payments Bank
         </div>
-        <div className="flex justify-center items-center gap-2">
-          <div onClick={() => setDeposit(!deposit)} className="cursor-pointer">
+        <div className="flex justify-center items-center gap-2 basis-[30%]">
+          <div
+            onClick={() => setDeposit(!deposit)}
+            className="cursor-pointer w-[20%]"
+          >
             {deposit ? <Minus /> : <PlusIcon />}
           </div>
           {!balance ? (
             <button
-              className={`bg-blue-950 text-xs text-stone-50 ${loading ? "px-6 py-3" : "px-4 py-2"}`}
+              className={`bg-blue-950 text-xs text-stone-50 h-8 w-[80%] ${loading ? "px-6 py-3" : "px-4 py-2"}`}
               onClick={getBalance}
             >
-              {loading ? <Loading2 bg="white" /> : "Get Balance"}
+              {loading ? <Loading3 bg="white" /> : "Get Balance"}
             </button>
           ) : (
             <div>
@@ -143,7 +145,7 @@ function BankCard({ userId }: { userId: number }) {
                   <Refresh />
                 </div>
               </div>
-              {loading && <Loading2 bg="blue-950" />}
+              {loading && <Loading3 bg="blue-950" />}
             </div>
           )}
         </div>
@@ -156,17 +158,17 @@ function BankCard({ userId }: { userId: number }) {
           >
             <input
               type="number"
-              className="basis-10/12 outline-none text-xs font-normal px-2 h-10 border focus:border-blue-500"
+              className="w-[70%] outline-none text-xs font-normal px-2 h-10 border focus:border-blue-500"
               placeholder="Enter amount to deposit in your account"
               required
               onChange={(e) => setAmount(parseInt(e.target.value))}
-              value={amount}
+              value={amount === null ? "" : amount}
             />
             <button
               type="submit"
-              className="basis-1/6 bg-blue-950 px-3 py-2 text-stone-50 font-normal"
+              className="w-[30%] bg-blue-950 px-3 py-2 h-10 text-stone-50 font-normal"
             >
-              {loading2 ? <Loading2 bg="stone-50" /> : "Deposit"}
+              {loading2 ? <Loading3 bg="stone-50" /> : "Deposit"}
             </button>
           </form>
         </div>
