@@ -14,16 +14,33 @@ router.post("/", async (req: Request, res: Response) => {
     try {
       console.log(validatedData.data);
       const amount = validatedData.data?.amount || 0;
-      const deposit = await prisma.customer.update({
-        where: {
-          customerId: validatedData.data?.id,
-        },
-        data: {
-          balance: {
-            increment: amount * 100,
+
+      await prisma.$transaction(async (tx) => {
+        await tx.customer.update({
+          where: {
+            customerId: validatedData.data?.id,
           },
-        },
+          data: {
+            balance: {
+              increment: amount * 100,
+            },
+          },
+        });
+        const token = (Math.random() * 1000).toString();
+        await tx.transactions.create({
+          data: {
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            transType: "deposit",
+            transStatus: "Success",
+            amount: amount * 100,
+            token: token,
+            execBy: validatedData.data.id,
+            toUserId: 0,
+          },
+        });
       });
+
       res.status(200).json({
         message: "Successfully deposited",
       });
