@@ -13,13 +13,15 @@ router.post("/", async (req: Request, res: Response) => {
   }
 
   try {
+    console.log(validatedData.data);
+    const amount = validatedData.data?.amount || 0;
     const deposit = await prisma.customer.update({
       where: {
         customerId: validatedData.data?.id,
       },
       data: {
         balance: {
-          increment: validatedData.data?.amount,
+          increment: amount * 100,
         },
       },
     });

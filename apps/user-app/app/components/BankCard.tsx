@@ -1,6 +1,6 @@
 "use client";
 import axios, { AxiosError } from "axios";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import PopUp from "./overlay";
 import Loading2 from "./Loading2";
 import Refresh from "./Refresh";
@@ -15,6 +15,7 @@ function BankCard({ userId }: { userId: number }) {
   const [error, setError] = useState<string>("");
   const [deposit, setDeposit] = useState<boolean>(false);
   const [amount, setAmount] = useState<number | null>(null);
+  const input = useRef();
 
   async function getBalance() {
     try {
@@ -46,16 +47,22 @@ function BankCard({ userId }: { userId: number }) {
       setShowPopUp(true);
     } finally {
       setLoading(false);
+      setDeposit(false);
     }
   }
 
   async function Deposit(e: FormEvent) {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.BANK_URL}/deposit`, {
-        id: userId,
-        amount: amount,
-      });
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BANK_URL}/deposit`,
+        {
+          id: userId,
+          amount: amount,
+        }
+      );
 
       if (response.status === 200) {
         setError(`Successfully deposited ${amount} to your account`);
@@ -77,6 +84,9 @@ function BankCard({ userId }: { userId: number }) {
       setError("An unexpected error occurred");
       setShowPopUp(true);
       return;
+    } finally {
+      setLoading(false);
+      setDeposit(false);
     }
   }
   return (
@@ -145,7 +155,7 @@ function BankCard({ userId }: { userId: number }) {
               type="submit"
               className="basis-1/6 bg-blue-950 px-3 py-2 text-stone-50 font-normal"
             >
-              Add
+              {loading ? <Loading2 bg="stone-50" /> : "deposit"}
             </button>
           </form>
         </div>
