@@ -102,7 +102,7 @@ export const AddMoney = () => {
           Provider Bank
         </div>
         <select
-          className="w-full outline-none p-2 text-gray-600 bg-stone-50"
+          className="w-full outline-none p-2 text-gray-600 bg-stone-50 border border-gray-500"
           onChange={(val) => {
             setBank(parseInt(val.target.value));
           }}
