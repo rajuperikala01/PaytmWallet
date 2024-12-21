@@ -8,30 +8,30 @@ router.post("/", async (req: Request, res: Response) => {
   const validatedData = depositSchema.safeParse(req.body);
   if (!validatedData.success) {
     res.status(401).json({
-      error: validatedData.error.issues[1],
+      error: validatedData.error.issues[0]?.message,
     });
-  }
-
-  try {
-    console.log(validatedData.data);
-    const amount = validatedData.data?.amount || 0;
-    const deposit = await prisma.customer.update({
-      where: {
-        customerId: validatedData.data?.id,
-      },
-      data: {
-        balance: {
-          increment: amount * 100,
+  } else {
+    try {
+      console.log(validatedData.data);
+      const amount = validatedData.data?.amount || 0;
+      const deposit = await prisma.customer.update({
+        where: {
+          customerId: validatedData.data?.id,
         },
-      },
-    });
-    res.status(200).json({
-      message: "Successfully deposited",
-    });
-  } catch (error) {
-    res.status(400).json({
-      error: "Didn't find Customer",
-    });
+        data: {
+          balance: {
+            increment: amount * 100,
+          },
+        },
+      });
+      res.status(200).json({
+        message: "Successfully deposited",
+      });
+    } catch (error) {
+      res.status(400).json({
+        error: "Didn't find Customer",
+      });
+    }
   }
 });
 

@@ -14,12 +14,14 @@ function BankCard({ userId }: { userId: number }) {
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [deposit, setDeposit] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number | null>(null);
+  const [amount, setAmount] = useState<number>();
+  const [loading2, setLoading2] = useState<boolean>(false);
   const input = useRef();
 
   async function getBalance() {
     try {
       setLoading(true);
+
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const response = await axios.get(
@@ -47,14 +49,20 @@ function BankCard({ userId }: { userId: number }) {
       setShowPopUp(true);
     } finally {
       setLoading(false);
-      setDeposit(false);
+      setAmount(0);
     }
   }
 
   async function Deposit(e: FormEvent) {
     e.preventDefault();
+    if (!amount || amount < 1) {
+      setError("Please enter a valid number");
+      setShowPopUp(true);
+      return;
+    }
     try {
-      setLoading(true);
+      setLoading2(true);
+
       await new Promise((resolve) => setTimeout(resolve, 1500));
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BANK_URL}/deposit`,
@@ -67,6 +75,7 @@ function BankCard({ userId }: { userId: number }) {
       if (response.status === 200) {
         setError(`Successfully deposited ${amount} to your account`);
         setShowPopUp(true);
+
         return;
       }
     } catch (error) {
@@ -77,6 +86,7 @@ function BankCard({ userId }: { userId: number }) {
           setShowPopUp(true);
           return;
         }
+
         setError(error.response?.data.error);
         setShowPopUp(true);
         return;
@@ -85,8 +95,8 @@ function BankCard({ userId }: { userId: number }) {
       setShowPopUp(true);
       return;
     } finally {
-      setLoading(false);
-      setDeposit(false);
+      setLoading2(false);
+      setAmount(0);
     }
   }
   return (
@@ -150,12 +160,13 @@ function BankCard({ userId }: { userId: number }) {
               placeholder="Enter amount to deposit in your account"
               required
               onChange={(e) => setAmount(parseInt(e.target.value))}
+              value={amount}
             />
             <button
               type="submit"
               className="basis-1/6 bg-blue-950 px-3 py-2 text-stone-50 font-normal"
             >
-              {loading ? <Loading2 bg="stone-50" /> : "deposit"}
+              {loading2 ? <Loading2 bg="stone-50" /> : "Deposit"}
             </button>
           </form>
         </div>
