@@ -22,7 +22,7 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
 
   return (
     <div
-      className="bg-stone-50 w-[97%] lg:w-full px-3 sm:px-6 mt-2 py-4 rounded-sm
+      className="bg-stone-50 w-[97%] lg:w-full px-3 sm:px-4 mt-2 py-4 rounded-sm
      shadow-sm shadow-gray-500"
     >
       <div
@@ -30,7 +30,8 @@ function WalletCard({ id, amount }: { id: string; amount: number }) {
                  flex justify-between items-center"
       >
         <div className="text-xl font-semibold basis-3/5 sm:basis-4/5">
-          Wallet
+          <div className="text-blue-500">Wallet</div>
+
           <div className="text-sm font-medium flex items-center gap-2 whitespace-nowrap">
             Available Balance:{" "}
             <span className="font-medium text-base">{balance}.00</span> INR

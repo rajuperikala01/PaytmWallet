@@ -1,11 +1,12 @@
 "use client";
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import PopUp from "./overlay";
 import Loading2 from "./Loading2";
 import Refresh from "./Refresh";
 import PlusIcon from "./PlusIcon";
 import Minus from "./Minus";
+import dotenv from "dotenv";
 
 function BankCard({ userId }: { userId: number }) {
   const [balance, setBalance] = useState<number | null>(null);
@@ -13,6 +14,7 @@ function BankCard({ userId }: { userId: number }) {
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [deposit, setDeposit] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number | null>(null);
 
   async function getBalance() {
     try {
@@ -30,6 +32,12 @@ function BankCard({ userId }: { userId: number }) {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
+        console.log(error);
+        if (error.code === "ERR_NETWORK") {
+          setError("Cannot able to connect with the Server");
+          setShowPopUp(true);
+          return;
+        }
         setError(error.response?.data.error);
         setShowPopUp(true);
         return;
@@ -40,9 +48,40 @@ function BankCard({ userId }: { userId: number }) {
       setLoading(false);
     }
   }
+
+  async function Deposit(e: FormEvent) {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${process.env.BANK_URL}/deposit`, {
+        id: userId,
+        amount: amount,
+      });
+
+      if (response.status === 200) {
+        setError(`Successfully deposited ${amount} to your account`);
+        setShowPopUp(true);
+        return;
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error);
+        if (error.code === "ERR_NETWORK") {
+          setError("Cannot able to connect with the Server");
+          setShowPopUp(true);
+          return;
+        }
+        setError(error.response?.data.error);
+        setShowPopUp(true);
+        return;
+      }
+      setError("An unexpected error occurred");
+      setShowPopUp(true);
+      return;
+    }
+  }
   return (
     <div
-      className="bg-stone-50 w-[97%] lg:w-full px-3 mt-2 py-4 rounded-sm
+      className="bg-stone-50 w-[97%] lg:w-full px-3 mt-2 py-4 rounded-sm sm:px-4
      shadow-sm shadow-gray-500"
     >
       {showPopUp && (
@@ -56,9 +95,11 @@ function BankCard({ userId }: { userId: number }) {
         />
       )}
 
-      <div className="text-lg font-semibold mb-4">Your Accounts</div>
+      <div className="text-lg font-semibold mb-1 text-blue-500">
+        Your Accounts
+      </div>
 
-      <div className="flex justify-between items-center bg-stone-50 px-4 w-full">
+      <div className="flex justify-between items-center bg-stone-50 px-1 w-full">
         <div className="text-sm font-semibold">
           Paytm <br />
           Payments Bank
@@ -90,15 +131,20 @@ function BankCard({ userId }: { userId: number }) {
       {deposit && (
         <div className="flex justify-center items-center text-sm">
           <form
-            action=""
+            onSubmit={Deposit}
             className="flex justify-center items-center mt-5 w-11/12 gap-2"
           >
             <input
               type="number"
               className="basis-10/12 outline-none text-xs font-normal px-2 h-10 border focus:border-blue-500"
               placeholder="Enter amount to deposit in your account"
+              required
+              onChange={(e) => setAmount(parseInt(e.target.value))}
             />
-            <button className="basis-1/6 bg-blue-950 px-3 py-2 text-stone-50 font-normal">
+            <button
+              type="submit"
+              className="basis-1/6 bg-blue-950 px-3 py-2 text-stone-50 font-normal"
+            >
               Add
             </button>
           </form>

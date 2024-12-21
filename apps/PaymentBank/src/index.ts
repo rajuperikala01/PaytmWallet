@@ -76,24 +76,6 @@ app.post("/api/v1/createAccount", async (req, res) => {
 const port = process.env.PORT || 3050;
 console.log(process.env.PORT);
 
-app.get("/api/v1/balance/:customerId", async (req, res) => {
-  const { customerId } = req.params;
-  try {
-    const balance = await prisma.customer.findUnique({
-      where: {
-        customerId: Number(customerId),
-      },
-    });
-    res.status(200).json({
-      balance: balance?.balance,
-    });
-  } catch (error) {
-    res.status(403).json({
-      error: "Unauthentcated request",
-    });
-  }
-});
-
 app.post("/api/v1/transfer", async (req, res) => {
   const validatedData = bankTransferSchema.safeParse(req.body);
 

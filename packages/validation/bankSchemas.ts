@@ -43,3 +43,12 @@ export const p2pTransfer = zod.object({
     .regex(/^[0-9]{10}$/, "Invalid mobile number. It must be 10 digits."),
   amount: zod.number().min(1, "Amount should be greater than Zero"),
 });
+
+export const depositSchema = zod.object({
+  id: zod
+    .number({ required_error: "Required customerId" })
+    .min(1, "Customer Id cannot be negative"),
+  amount: zod
+    .number({ required_error: "required Amount" })
+    .min(1, "Amount should be greater than zero(0)"),
+});
