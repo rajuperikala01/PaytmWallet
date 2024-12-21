@@ -5,3 +5,15 @@
 /* body {
   font-family: "__Poppins_e16692", sans-serif;
 } */
+
+/* styles/global.css */
+
+/* Remove arrows in number input fields */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"]:focus {
+  outline: none; /* Optional: removes the outline on focus */
+}

@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        id: userId.id,
+        id: Number(userId.id),
       },
     });
 

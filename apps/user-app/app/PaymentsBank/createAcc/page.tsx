@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { createAccountSchema } from "@repo/validation/bankschemas";
 import PopUp from "../../components/overlay";
 import Loading2 from "../../components/Loading2";
+import { useRouter } from "next/navigation";
 
 interface customer {
   email: string;
@@ -23,15 +24,16 @@ function CreateAcc() {
   });
   const [showPopUp, setShowPopUp] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   async function createACC(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     const validate = createAccountSchema.safeParse(customerDetails);
 
     if (!validate.success) {
       setError(validate.error.errors[0]?.message || "Invalid Fields");
-      setShowPopUp(true);
       setLoading(false);
       return;
     }
@@ -47,12 +49,11 @@ function CreateAcc() {
       );
 
       if (customer.status === 201) {
-        <PopUp
-          message={`Created Successfully ${customerDetails.name} with Acc Number ${customer.data.customer.accNumber}`}
-          open={showPopUp}
-          Closed={() => setShowPopUp(false)}
-        />;
         setLoading(false);
+        setError(
+          `successfully created with Account number ${customer.data.customer.accNumber} goto dashboard and link your account`
+        );
+        setShowPopUp(true);
         return;
       }
     } catch (error: any) {
@@ -63,7 +64,6 @@ function CreateAcc() {
           error.code === "ERR_NETWORK"
         ) {
           setError("Can't connect with the server.");
-          setShowPopUp(true);
           setLoading(false);
           return;
         } else if (error.response?.data?.error?.error?.name === "ZodError") {
@@ -72,13 +72,11 @@ function CreateAcc() {
           return;
         } else {
           setError(error.response?.data.error);
-          setShowPopUp(true);
           setLoading(false);
           return;
         }
       }
       setError("An error Occurred.. please try again after some time");
-      setShowPopUp(true);
       setLoading(false);
       return;
     } finally {
@@ -114,10 +112,8 @@ function CreateAcc() {
           Payments <br />
           Bank
         </div>
-        {/* <div className="h-40 w-40 bg-white">
-          <img src="/landingpage2.svg" alt="" />
-        </div> */}
       </div>
+
       <form
         className="px-4 sm:pt-2 basis-full sm:basis-3/4
          md:basis-3/5 lg:basis-2/5 lg:px-20"
@@ -135,11 +131,16 @@ function CreateAcc() {
             TM
           </span>
         </div>
+
         <div className="h-4">
+          {error && <div className="text-red-500 text-sm">{error}</div>}
           {showPopUp && error && (
             <PopUp
               message={error}
-              Closed={() => setShowPopUp(false)}
+              Closed={() => {
+                setShowPopUp(false);
+                router.push("/dashboard");
+              }}
               open={showPopUp}
             />
           )}

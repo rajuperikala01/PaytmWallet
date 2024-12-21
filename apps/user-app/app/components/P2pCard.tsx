@@ -92,7 +92,10 @@ function PersontoPerson() {
         />
       )}
       <form className="basis-full md:basis-1/2" onSubmit={Transfer}>
-        <Card title="Transfer">
+        <div title="Transfer" className="bg-stone-50 p-3 sm:p-5 mt-4 sm:mt-2">
+          <div className="text-lg md:text-xl border-b pb-2 font-semibold text-blue-950">
+            transfer
+          </div>
           <div>
             <TextInput
               label="Mobile"
@@ -136,7 +139,7 @@ function PersontoPerson() {
               {processing ? <Loading2 bg="white" /> : "Send"}
             </button>
           </div>
-        </Card>
+        </div>
       </form>
     </div>
   );

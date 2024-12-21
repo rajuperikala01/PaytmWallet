@@ -119,33 +119,35 @@ function BankCard({ userId }: { userId: number }) {
       </div>
 
       <div className="flex justify-between items-center bg-stone-50 px-1 w-full">
-        <div className="text-sm font-semibold basis-[70%]">
+        <div className="text-sm font-semibold basis-1/2">
           Paytm <br />
           Payments Bank
         </div>
-        <div className="flex justify-center items-center gap-2 basis-[30%]">
+        <div className="flex justify-center items-center gap-2 basis-1/2">
           <div
             onClick={() => setDeposit(!deposit)}
-            className="cursor-pointer w-[20%]"
+            className="cursor-pointer basis-[10%]"
           >
             {deposit ? <Minus /> : <PlusIcon />}
           </div>
           {!balance ? (
             <button
-              className={`bg-blue-950 text-xs text-stone-50 h-8 w-[80%] ${loading ? "px-6 py-3" : "px-4 py-2"}`}
+              className={`bg-blue-950 text-xs text-stone-50 h-8 basis-4/5 ${loading ? "px-6 py-3" : "px-4 py-2"}`}
               onClick={getBalance}
             >
               {loading ? <Loading3 bg="white" /> : "Get Balance"}
             </button>
           ) : (
             <div>
-              <div className="text-base font-medium flex gap-2 h-full">
+              <div className="text-base font-medium flex gap-2 h-full basis-4/5">
                 {balance}.00 INR
-                <div onClick={getBalance} className="cursor-pointer">
+                <div onClick={getBalance} className="cursor-pointer h-5/6">
                   <Refresh />
                 </div>
               </div>
-              {loading && <Loading3 bg="blue-950" />}
+              <div className="h-1/6">
+                {loading && <Loading3 bg="blue-950" />}
+              </div>
             </div>
           )}
         </div>

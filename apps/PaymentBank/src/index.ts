@@ -9,6 +9,7 @@ import BankLink from "./controllers/link";
 import cors from "cors";
 import getbalance from "./controllers/balance";
 import deposit from "./controllers/deposit";
+import signin from "./controllers/login";
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/v1/transactionFailed", transactionFailed);
 app.use("/api/v1/BankLink", BankLink);
 app.use("/api/v1/getBalance", getbalance);
 app.use("/api/v1/deposit", deposit);
+app.use("/api/v1/signin", signin);
 
 app.post("/api/v1/createAccount", async (req, res) => {
   const validatedData = createAccountSchema.safeParse(req.body);

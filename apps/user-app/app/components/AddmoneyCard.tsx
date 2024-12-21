@@ -75,7 +75,11 @@ export const AddMoney = () => {
   };
 
   return (
-    <Card title="Add to Wallet">
+    <div className="bg-stone-50 p-3 sm:p-5 mt-4 sm:mt-2">
+      <div className="text-lg md:text-xl border-b pb-2 font-semibold text-blue-950">
+        Add to Wallet
+      </div>
+
       {showPopUp && (
         <div className="text-md text-red-600">
           <PopUp
@@ -85,7 +89,6 @@ export const AddMoney = () => {
           />
         </div>
       )}
-
       <form className="w-full" onSubmit={handleTransaction}>
         <TextInput
           label="Amount"
@@ -119,6 +122,6 @@ export const AddMoney = () => {
           </button>
         </div>
       </form>
-    </Card>
+    </div>
   );
 };
