@@ -6,7 +6,7 @@ interface ButtonProps {
   disabled: boolean;
 }
 
-export const Button = ({ onClick, children, disabled }: ButtonProps) => {
+export const Button = ({ onClick, children }: ButtonProps) => {
   return (
     <button
       onClick={onClick}

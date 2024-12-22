@@ -2,18 +2,18 @@
 
 export const TextInput = ({
   placeholder,
-  onChange,
   label,
   type = "text",
   required,
   disabled,
+  onChange,
 }: {
   placeholder: string;
-  onChange: (value: string) => void;
   label: string;
   type: string;
   required: boolean;
   disabled: boolean;
+  onChange: (val: string) => void;
 }) => {
   return (
     <div className="pt-2">

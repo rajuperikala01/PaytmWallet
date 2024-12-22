@@ -1,5 +1,4 @@
 "use client";
-import { Card } from "@repo/ui/card";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
