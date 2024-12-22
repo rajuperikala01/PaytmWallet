@@ -25,7 +25,7 @@ function BankCard({ userId }: { userId: number }) {
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       const response = await axios.get(
-        "http://localhost:3010/api/v1/getBalance",
+        `${process.env.NEXT_PUBLIC_BANK_URL}/getBalance`,
         {
           params: { id: userId },
         }

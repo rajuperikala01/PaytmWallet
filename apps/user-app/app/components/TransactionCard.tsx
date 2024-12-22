@@ -27,9 +27,7 @@ interface TransactionCardProps {
 const TransactionCard = ({ transaction }: any) => {
   console.log();
 
-  // Type narrowing based on 'role'
   if (transaction.role === "sender") {
-    // Here, TypeScript knows `transaction` is of type `SenderTransaction`
     const { receiverName, receiverId, amount, createdAt, tranStatus } =
       transaction;
     return (
@@ -43,7 +41,6 @@ const TransactionCard = ({ transaction }: any) => {
       </div>
     );
   } else {
-    // Here, TypeScript knows `transaction` is of type `ReceiverTransaction`
     const { senderName, senderId, amount, createdAt, tranStatus } = transaction;
     return (
       <div className="flex justify-between px-2 py-4 rounded-lg bg-stone-50">

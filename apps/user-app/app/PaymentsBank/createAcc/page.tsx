@@ -1,7 +1,7 @@
 "use client";
 import { TextInput } from "@repo/ui/textinput";
 import axios, { AxiosError } from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createAccountSchema } from "@repo/validation/bankschemas";
 import PopUp from "../../components/overlay";
 import Loading2 from "../../components/Loading2";

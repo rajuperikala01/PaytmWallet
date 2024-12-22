@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
         console.log(customer.balance, validatedData.data.amount);
         try {
           const response = await axios.patch(
-            "http://localhost:3002/api/v2/insufficientfunds",
+            `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/insufficientfunds`,
             {
               token: validatedData.data.token,
             }
@@ -79,7 +79,7 @@ router.post("/", async (req, res) => {
         try {
           console.log("webhook block");
           const webhook = await axios.post(
-            "http://localhost:3002/api/v2/hdfcWebhook",
+            `${process.env.NEXT_PUBLIC_WEBHOOK_URL}/hdfcWebhook`,
             {
               token: validatedData.data.token,
               amount: validatedData.data.amount,

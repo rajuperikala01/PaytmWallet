@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
 
     try {
       const request = await axios.post(
-        "http://localhost:3010/api/v1/BankLink",
+        `${process.env.NEXT_PUBLIC_BANK_URL}/BankLink`,
         {
           number: user?.number,
         }

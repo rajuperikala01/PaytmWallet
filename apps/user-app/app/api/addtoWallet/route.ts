@@ -55,7 +55,7 @@ export const POST = async (req: NextRequest) => {
     });
     try {
       const bankReq = await axios.post(
-        "http://localhost:3010/api/v1/paytmTransfer",
+        `${process.env.NEXT_PUBLIC_BANK_URL}/paytmTransfer`,
         {
           amount: validatedData.data.amount * 100,
           from: Number(session.user.id),
