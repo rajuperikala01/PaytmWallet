@@ -31,7 +31,7 @@ export const POST = async (req: NextRequest) => {
   if (existingUser) {
     return NextResponse.json(
       {
-        message: "Email already Exists",
+        error: "Email already Exists",
       },
       { status: 400 }
     );
@@ -45,7 +45,7 @@ export const POST = async (req: NextRequest) => {
   if (existingNumber) {
     return NextResponse.json(
       {
-        message: "Mobile already Exists",
+        error: "Mobile already Exists",
       },
       { status: 400 }
     );
@@ -75,7 +75,7 @@ export const POST = async (req: NextRequest) => {
   } catch (e) {
     return NextResponse.json(
       {
-        message: "Server not working",
+        error: "Server not working",
       },
       { status: 500 }
     );

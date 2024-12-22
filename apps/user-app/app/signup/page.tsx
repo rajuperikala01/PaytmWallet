@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
-import GradientBackground from "../components/GradientMotion";
 import { useSession } from "next-auth/react";
 
 function page() {
@@ -17,7 +16,43 @@ function page() {
   });
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState("password");
+  const [error, setError] = useState<string | null>(null);
   const session = useSession();
+
+  async function handleSignUp(e: FormEvent) {
+    try {
+      e.preventDefault();
+      setLoading(true);
+      const res = await axios.post("/api/signup", {
+        email: data.email,
+        mobile: data.mobile,
+        password: data.password,
+        username: data.username,
+      });
+      setLoading(false);
+      if (res.status === 201 || 200) {
+        router.push("/auth/signin");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (
+          error.code === "ECONNREFUSED" ||
+          error.code === "ENOTFOUND" ||
+          error.code === "ERR_NETWORK"
+        ) {
+          setError("Can't connect with the server.");
+          return;
+        } else {
+          setError(error.response?.data.error);
+          return;
+        }
+      }
+      setError("An error Occurred.. please try again after some time");
+      return;
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     if (session.status === "authenticated") {
@@ -31,20 +66,7 @@ function page() {
          lg:basis-2/5 bg-stone-50 text-start
         sm:flex sm:flex-col sm:px-32
         md:px-48 lg:px-20"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          setLoading(true);
-          const res = await axios.post("/api/signup", {
-            email: data.email,
-            mobile: data.mobile,
-            password: data.password,
-            username: data.username,
-          });
-          setLoading(false);
-          if (res.status === 201 || 200) {
-            router.push("/auth/signin");
-          }
-        }}
+        onSubmit={handleSignUp}
       >
         <div className="mb-2 text-3xl text-blue-950 font-bold pt-10">
           Pay<span className="text-blue-500">TM</span>
@@ -56,6 +78,7 @@ function page() {
           Welcome to PayTM! <br />
           Create your account
         </div>
+        {error && <div className="text-red-500 text-sm">{error}</div>}
         <div>
           <label htmlFor="">Email:</label>
           <br />

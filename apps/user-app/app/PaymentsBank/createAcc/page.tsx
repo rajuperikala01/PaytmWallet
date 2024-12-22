@@ -39,7 +39,7 @@ function CreateAcc() {
     }
     try {
       const customer = await axios.post(
-        "http://localhost:3010/api/v1/createAccount",
+        `${process.env.NEXT_PUBLIC_BANK_URL}/createAccount`,
         {
           email: customerDetails.email,
           mobile: customerDetails.mobile,
