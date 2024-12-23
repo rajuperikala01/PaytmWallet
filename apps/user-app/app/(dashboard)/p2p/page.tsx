@@ -16,6 +16,7 @@ interface TransactionSender {
   amount: number;
   createdAt: Date;
   tranStatus: Status;
+  senderName: undefined;
 }
 
 // Define the interface for the second shape of `tx`
@@ -27,6 +28,7 @@ interface TransactionReceiver {
   tranStatus: Status;
   senderName: string; // Exclude senderName
   senderId: number; // Exclude senderId
+  receiverName: undefined;
 }
 
 // Union type for `tx`, combining the two interfaces
@@ -100,10 +102,7 @@ export default async function () {
         <Card title="Recent Transactions">
           <div className="flex flex-col gap-2">
             {transactions &&
-              transactions.map((tx: any) => {
-                if (tx.role === "receiver" && tx.tranStatus === "Failed") {
-                  return;
-                }
+              transactions.map((tx: Transaction) => {
                 return (
                   <div
                     className="flex justify-between bg-stone-50
