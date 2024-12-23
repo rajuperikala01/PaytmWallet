@@ -1,4 +1,3 @@
-import { Status } from ".prisma/client";
 import { Card } from "@repo/ui/card";
 
 interface onRamp {
