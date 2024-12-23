@@ -81,7 +81,6 @@ export default async function () {
       createdAt: "desc",
     },
   });
-  console.log(response);
 
   const transactions = response.map((tx: TransactionType) => {
     const sender = tx.senderId === parseInt(session.user.id);
@@ -119,6 +118,9 @@ export default async function () {
           <div className="flex flex-col gap-2">
             {transactions &&
               transactions.map((tx: Transaction) => {
+                if (tx.role === "receiver" && tx.tranStatus === "Failed") {
+                  return;
+                }
                 return (
                   <div
                     className="flex justify-between bg-stone-50

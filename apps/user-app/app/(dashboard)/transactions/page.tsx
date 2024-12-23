@@ -1,4 +1,4 @@
-import prisma from "@repo/database/client";
+import prisma, { Status } from "@repo/database/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
@@ -6,6 +6,48 @@ import SuccessIcon from "../../components/SuccessIcon";
 import FailedIcon from "../../components/FailedIcon";
 import Processing from "../../components/Processing";
 
+interface TransactionSender {
+  role: string;
+  id: number;
+  receiverName: string;
+  receiverId: number;
+  amount: number;
+  createdAt: Date;
+  tranStatus: Status;
+  senderName: undefined;
+}
+
+// Define the interface for the second shape of `tx`
+interface TransactionReceiver {
+  role: string;
+  id: number;
+  amount: number;
+  createdAt: Date;
+  tranStatus: Status;
+  senderName: string; // Exclude senderName
+  senderId: number; // Exclude senderId
+  receiverName: undefined;
+}
+
+// Union type for `tx`, combining the two interfaces
+type Transaction = TransactionSender | TransactionReceiver;
+
+interface TransactionType {
+  amount: number;
+  createdAt: Date;
+  id: number;
+  receiver: {
+    id: number;
+    name: string;
+  };
+  sender: {
+    id: number;
+    name: string;
+  };
+  senderId: number;
+  reciverId: number;
+  status: Status;
+}
 export default async function () {
   const session = await getServerSession(authOptions);
 
@@ -39,7 +81,7 @@ export default async function () {
     },
   });
 
-  const transactions = response.map((tx) => {
+  const transactions = response.map((tx: TransactionType) => {
     const sender = tx.senderId === parseInt(session.user.id);
     if (sender) {
       return {
@@ -64,7 +106,7 @@ export default async function () {
   });
   return (
     <div className="pt-20 flex flex-col gap-2 px-3 lg:p-24 lg:pt-28">
-      {transactions.map((tx) => {
+      {transactions.map((tx: Transaction) => {
         if (tx.role === "receiver" && tx.tranStatus === "Failed") {
           return;
         }

@@ -1,4 +1,13 @@
+import { Status } from ".prisma/client";
 import { Card } from "@repo/ui/card";
+
+interface onRamp {
+  id: number;
+  time: Date;
+  status: string;
+  amount: number;
+  provider: string;
+}
 
 export const OnRampTransactions = ({
   transactions,
@@ -21,7 +30,7 @@ export const OnRampTransactions = ({
   return (
     <Card title="Recent Transactions">
       <div className="md:px-4">
-        {transactions.map((t) => (
+        {transactions.map((t: onRamp) => (
           <div
             className="group flex justify-between
              bg-stone-100 p-4 mt-2 sm:mt-4 rounded-lg shadow-md items-center"
