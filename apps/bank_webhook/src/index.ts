@@ -89,6 +89,10 @@ app.patch("/api/v2/insufficientfunds", async (req: Request, res: Response) => {
   });
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const port = process.env.PORT || 3050;
 
 app.listen(port, () => {

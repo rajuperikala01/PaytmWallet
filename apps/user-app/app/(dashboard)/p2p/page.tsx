@@ -2,11 +2,35 @@ import { getServerSession } from "next-auth";
 import PersontoPerson from "../../components/P2pCard";
 import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
-import prisma from "@repo/database/client";
+import prisma, { Status } from "@repo/database/client";
 import SuccessIcon from "../../components/SuccessIcon";
 import FailedIcon from "../../components/FailedIcon";
 import Processing from "../../components/Processing";
 import { Card } from "@repo/ui/card";
+
+interface TransactionSender {
+  role: string;
+  id: number;
+  receiverName: string;
+  receiverId: number;
+  amount: number;
+  createdAt: Date;
+  tranStatus: Status;
+}
+
+// Define the interface for the second shape of `tx`
+interface TransactionReceiver {
+  role: string;
+  id: number;
+  amount: number;
+  createdAt: Date;
+  tranStatus: Status;
+  senderName: string; // Exclude senderName
+  senderId: number; // Exclude senderId
+}
+
+// Union type for `tx`, combining the two interfaces
+type Transaction = TransactionSender | TransactionReceiver;
 
 export default async function () {
   const session = await getServerSession(authOptions);
@@ -39,6 +63,7 @@ export default async function () {
       createdAt: "desc",
     },
   });
+  console.log(response);
 
   const transactions = response.map((tx) => {
     const sender = tx.senderId === parseInt(session.user.id);
@@ -74,64 +99,65 @@ export default async function () {
       <div className="basis-full md:basis-[48%]">
         <Card title="Recent Transactions">
           <div className="flex flex-col gap-2">
-            {transactions.map((tx) => {
-              if (tx.role === "receiver" && tx.tranStatus === "Failed") {
-                return;
-              }
-              return (
-                <div
-                  className="flex justify-between bg-stone-50
+            {transactions &&
+              transactions.map((tx: any) => {
+                if (tx.role === "receiver" && tx.tranStatus === "Failed") {
+                  return;
+                }
+                return (
+                  <div
+                    className="flex justify-between bg-stone-50
                 rounded-lg shadow-sm shadow-gray-400 items-center px-2 py-4 lg:p-4"
-                  key={tx.id}
-                >
-                  <div>
-                    {tx.role === "sender" ? (
-                      <div className="text-xs text-gray-500 flex items-center tracking-widest">
-                        Sent to
+                    key={tx.id}
+                  >
+                    <div>
+                      {tx.role === "sender" ? (
+                        <div className="text-xs text-gray-500 flex items-center tracking-widest">
+                          Sent to
+                        </div>
+                      ) : (
+                        <div className="text-xs text-gray-500 tracking-widest">
+                          Received from
+                        </div>
+                      )}
+                      <div className="flex font-medium text-gray-700 text-sm lg:text-base">
+                        {tx.role === "sender" ? tx.receiverName : tx.senderName}
+                        {tx.tranStatus === "Success" && <SuccessIcon />}
+                        {tx.tranStatus === "Failed" && <FailedIcon />}
+                        {tx.tranStatus === "Processing" && <Processing />}
                       </div>
-                    ) : (
-                      <div className="text-xs text-gray-500 tracking-widest">
-                        Received from
+                    </div>
+                    <div className="text-end text-gray-500">
+                      <div
+                        className={`${
+                          tx.role === "sender" &&
+                          tx.tranStatus !== "Failed" &&
+                          tx.tranStatus !== "Processing" &&
+                          "text-red-500"
+                        } font-medium text-sm lg:text-base ${
+                          tx.role === "receiver" &&
+                          tx.tranStatus !== "Failed" &&
+                          tx.tranStatus !== "Processing" &&
+                          "text-green-500"
+                        }`}
+                      >
+                        {tx.role === "sender" ? -tx.amount : `+${tx.amount}`}
                       </div>
-                    )}
-                    <div className="flex font-medium text-gray-700 text-sm lg:text-base">
-                      {tx.role === "sender" ? tx.receiverName : tx.senderName}
-                      {tx.tranStatus === "Success" && <SuccessIcon />}
-                      {tx.tranStatus === "Failed" && <FailedIcon />}
-                      {tx.tranStatus === "Processing" && <Processing />}
+                      <div className="text-slate-600 text-xs">
+                        {new Date(tx.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}{" "}
+                        {new Date(tx.createdAt).toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-end text-gray-500">
-                    <div
-                      className={`${
-                        tx.role === "sender" &&
-                        tx.tranStatus !== "Failed" &&
-                        tx.tranStatus !== "Processing" &&
-                        "text-red-500"
-                      } font-medium text-sm lg:text-base ${
-                        tx.role === "receiver" &&
-                        tx.tranStatus !== "Failed" &&
-                        tx.tranStatus !== "Processing" &&
-                        "text-green-500"
-                      }`}
-                    >
-                      {tx.role === "sender" ? -tx.amount : `+${tx.amount}`}
-                    </div>
-                    <div className="text-slate-600 text-xs">
-                      {new Date(tx.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}{" "}
-                      {new Date(tx.createdAt).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
         </Card>
       </div>
