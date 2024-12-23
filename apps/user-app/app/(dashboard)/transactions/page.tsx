@@ -1,4 +1,4 @@
-import prisma, { Status } from "@repo/database/client";
+import prisma from "@repo/database/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
@@ -13,7 +13,7 @@ interface TransactionSender {
   receiverId: number;
   amount: number;
   createdAt: Date;
-  tranStatus: Status;
+  tranStatus: string;
   senderName: undefined;
 }
 
@@ -23,7 +23,7 @@ interface TransactionReceiver {
   id: number;
   amount: number;
   createdAt: Date;
-  tranStatus: Status;
+  tranStatus: string;
   senderName: string; // Exclude senderName
   senderId: number; // Exclude senderId
   receiverName: undefined;
@@ -46,7 +46,7 @@ interface TransactionType {
   };
   senderId: number;
   reciverId: number;
-  status: Status;
+  status: string;
 }
 export default async function () {
   const session = await getServerSession(authOptions);

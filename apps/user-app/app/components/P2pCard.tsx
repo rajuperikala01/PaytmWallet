@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { p2pTransfer } from "@repo/validation/bankschemas";
 import axios, { AxiosError } from "axios";
-import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
 import PopUp from "./overlay";
 import Loading2 from "./Loading2";

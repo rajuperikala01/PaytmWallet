@@ -1,6 +1,6 @@
 "use client";
 import axios, { AxiosError } from "axios";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import PopUp from "./overlay";
 import Refresh from "./Refresh";
 import PlusIcon from "./PlusIcon";
