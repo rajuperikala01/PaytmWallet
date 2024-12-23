@@ -34,6 +34,22 @@ interface TransactionReceiver {
 // Union type for `tx`, combining the two interfaces
 type Transaction = TransactionSender | TransactionReceiver;
 
+interface TransactionType {
+  amount: number;
+  createdAt: Date;
+  id: number;
+  receiver: {
+    id: number;
+    name: string;
+  };
+  sender: {
+    id: number;
+    name: string;
+  };
+  senderId: number;
+  reciverId: number;
+  status: Status;
+}
 export default async function () {
   const session = await getServerSession(authOptions);
   if (!session) {
@@ -67,7 +83,7 @@ export default async function () {
   });
   console.log(response);
 
-  const transactions = response.map((tx) => {
+  const transactions = response.map((tx: TransactionType) => {
     const sender = tx.senderId === parseInt(session.user.id);
     if (sender) {
       return {
