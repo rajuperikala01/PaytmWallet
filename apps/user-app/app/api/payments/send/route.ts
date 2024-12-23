@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { p2pTransfer } from "@repo/validation/bankschemas";
-import prisma from "@repo/database/client";
+import prisma, { Prisma } from "@repo/database/client";
 
 export const POST = async (req: NextRequest) => {
   const session = await getServerSession(authOptions);
@@ -84,7 +84,7 @@ export const POST = async (req: NextRequest) => {
       });
 
       try {
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
           await tx.$queryRaw`SELECT * FROM "User" WHERE "id" = ${fromUser?.id} FOR UPDATE`;
 
           await tx.user.update({

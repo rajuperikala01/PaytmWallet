@@ -7,12 +7,8 @@ import { schema } from "@repo/validation/bankschemas";
 
 export const POST = async (req: NextRequest) => {
   const session = await getServerSession(authOptions);
-  console.log(session);
-  console.log("HI");
 
   if (!session) {
-    console.log("If block");
-
     return NextResponse.json(
       {
         message: "Unauthenticated Request",
@@ -24,7 +20,6 @@ export const POST = async (req: NextRequest) => {
   const validatedData = schema.safeParse(body);
 
   if (!validatedData.success) {
-    console.log("Validation block");
     return NextResponse.json(
       {
         error: validatedData.error,
@@ -36,7 +31,6 @@ export const POST = async (req: NextRequest) => {
   const token = (Math.random() * 1000).toString();
 
   try {
-    console.log("try block");
     const transaction = await prisma.onRampTransaction.create({
       data: {
         token: token,
@@ -47,7 +41,7 @@ export const POST = async (req: NextRequest) => {
         userId: Number(session.user.id),
       },
     });
-    console.log("before bank response");
+
     const user = await prisma.user.findFirstOrThrow({
       where: {
         id: Number(session.user.id),

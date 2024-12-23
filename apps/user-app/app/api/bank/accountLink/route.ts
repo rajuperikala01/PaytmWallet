@@ -1,12 +1,9 @@
 import prisma from "@repo/database/client";
 import axios, { AxiosError } from "axios";
-import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "../../../lib/auth";
 
 export const POST = async (req: NextRequest) => {
   const userId = await req.json();
-  const session = await getServerSession(authOptions);
   try {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
@@ -32,11 +29,10 @@ export const POST = async (req: NextRequest) => {
           number: user?.number,
         }
       );
-      console.log(request);
 
       if (request.status === 200) {
         try {
-          const updatedUser = await prisma.user.update({
+          await prisma.user.update({
             where: {
               id: user?.id,
             },
