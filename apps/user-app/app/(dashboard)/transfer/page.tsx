@@ -1,13 +1,20 @@
 import prisma from "@repo/database/client";
 import { AddMoney } from "../../components/AddmoneyCard";
-import BalanceCard from "../../components/BalanceCard";
 import { OnRampTransactions } from "../../components/OnRampStatus";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
 import { redirect } from "next/navigation";
-import PopUp from "../../components/overlay";
-import BankLink from "../../components/BankLink";
 import WalletCard from "../../components/WalletCard";
+
+interface onRamp {
+  id: number;
+  startTime: Date;
+  status: string;
+  amount: number;
+  provider: string;
+  token: string;
+  userId: number;
+}
 
 async function getBalance() {
   const session = await getServerSession(authOptions);
@@ -36,7 +43,9 @@ async function getOnRampTransactions() {
     },
     take: 5,
   });
-  return txns.map((t) => ({
+  console.log(txns);
+
+  return txns.map((t: onRamp) => ({
     time: t.startTime,
     amount: t.amount,
     status: t.status,
