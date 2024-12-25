@@ -17,8 +17,5 @@
     "dotenv": "^16.4.5",
     "esbuild": "^0.24.0",
     "express": "^4.21.1"
-  },
-  "devDependencies": {
-    "prisma": "^6.1.0"
   }
 }
