@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "apps/bank_webhook/index.ts",
+      "src": "src/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "apps/bank_webhook/index.ts"
+      "dest": "dist/index.js"
     }
   ]
 }
