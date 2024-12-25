@@ -1,9 +1,4 @@
 {
-  "projects": {
-    "bankwehook": {
-      "root": "apps/bank_webhook"
-    }
-  },
   "builds": [
     {
       "src": "apps/bank_webhook/index.ts",
