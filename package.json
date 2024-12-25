@@ -22,7 +22,7 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "apps/bank/*"
+    "apps/bank_webhook/*"
   ],
   "dependencies": {
     "bcrypt": "^5.1.1",
