@@ -6,6 +6,11 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Success",
+  });
+});
 app.post(
   "/api/v2/hdfcWebhook",
   async (req: express.Request, res: express.Response) => {
