@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npx esbuild ./src/index.ts --bundle --platform=node --target=es2022 --format=esm --external:dotenv --external:prisma --outfile=dist/index.mjs",
-    "start": "node dist/index.js",
+    "build": "npx esbuild ./src/index.ts --bundle --platform=node --target=es2022 --outfile=api/index.js",
+    "start": "node api/index.js",
     "dev": "npm run build && npm run start",
     "vercel-build": "npm run build"
   },
