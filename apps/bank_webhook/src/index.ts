@@ -103,3 +103,5 @@ const port = process.env.PORT || 3050;
 app.listen(port, () => {
   console.log(`Server Listening on ${port} port`);
 });
+
+export default app;
