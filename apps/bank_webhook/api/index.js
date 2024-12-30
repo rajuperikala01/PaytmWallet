@@ -8,6 +8,10 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
 var __copyProps = (to2, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
@@ -24,6 +28,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // ../../node_modules/depd/index.js
 var require_depd = __commonJS({
@@ -29577,6 +29582,11 @@ var require_main = __commonJS({
 });
 
 // src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  default: () => src_default
+});
+module.exports = __toCommonJS(src_exports);
 var import_express = __toESM(require_express2());
 
 // ../../packages/database/index.ts
@@ -33590,13 +33600,11 @@ app.patch("/api/v2/insufficientfunds", async (req, res) => {
     message: "Updated successfully"
   });
 });
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200).send("OK");
 });
 var port = process.env.PORT || 3050;
-app.listen(port, () => {
-  console.log(`Server Listening on ${port} port`);
-});
+var src_default = app;
 /*! Bundled license information:
 
 depd/index.js:

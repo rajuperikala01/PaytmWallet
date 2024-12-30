@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=api/index.js",
+    "build": "npm run generate && npx esbuild ./src/index.ts --bundle --platform=node --outfile=api/index.js",
+    "generate": "npx prisma generate --schema=../../packages/database/prisma/schema.prisma",
     "start": "node api/index.js",
     "dev": "npm run build && npm run start",
     "vercel-build": "npm run build"
