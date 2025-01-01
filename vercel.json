@@ -4,7 +4,11 @@
       "src": "apps/bank_webhook/api/index.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": "node_modules/.prisma/**"
+        "includeFiles": [
+          "node_modules/.prisma/**",
+          "node_modules/@prisma/client/**",
+          "apps/bank_webhook/node_modules/.prisma/**"
+        ]
       }
     }
   ],
