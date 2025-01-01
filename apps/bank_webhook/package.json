@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run generate && npx esbuild ./src/index.ts --bundle --platform=node --outfile=api/index.js",
-    "generate": "npx prisma generate --schema=../../packages/database/prisma/schema.prisma && cp -r ./node_modules/.prisma apps/bank_webhook/node_modules/",
+    "generate": "npx prisma generate --schema=../../packages/database/prisma/schema.prisma && mkdir -p ./apps/bank_webhook/node_modules/.prisma && cp -r ./node_modules/.prisma ./apps/bank_webhook/node_modules/",
     "start": "node api/index.js",
     "dev": "npm run build && npm run start",
     "vercel-build": "npm run build"
