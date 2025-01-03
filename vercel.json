@@ -17,8 +17,5 @@
       "src": "/(.*)",
       "dest": "apps/bank_webhook/api/index.js"
     }
-  ],
-  "env": {
-    "PRISMA_QUERY_ENGINE_LIBRARY": "./node_modules/.prisma/client/libquery_engine-rhel-openssl-3.0.x.so.node"
-  }
+  ]
 }
