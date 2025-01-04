@@ -29174,7 +29174,7 @@ var require_client = __commonJS({
       },
       "relativeEnvPaths": {
         "rootEnvPath": null,
-        "schemaEnvPath": "../../../apps/bank_webhook/.env"
+        "schemaEnvPath": "../../../packages/database/.env"
       },
       "relativePath": "../../../packages/database/prisma",
       "clientVersion": "6.1.0",
@@ -33524,7 +33524,8 @@ var import_dotenv = __toESM(require_main());
 var app = (0, import_express.default)();
 app.use(import_express.default.json());
 import_dotenv.default.config();
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const result = await database_default.user.findMany();
   res.status(200).json({
     message: "Success"
   });

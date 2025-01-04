@@ -6,7 +6,8 @@ const app = express();
 app.use(express.json());
 dotenv.config();
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const result = await prisma.user.findMany();
   res.status(200).json({
     message: "Success",
   });
