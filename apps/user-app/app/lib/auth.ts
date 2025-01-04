@@ -54,15 +54,15 @@ export const authOptions = {
   callbacks: {
     // TODO: can u fix the type here? Using any is bad
     async jwt({ token, user }: any) {
-      if (user) {
-        // Add bankCustomerId to the token when a user is authenticated
-        token.bankCustomerId = user.bankCustomerId;
-      }
+      // if (user) {
+      //   // Add bankCustomerId to the token when a user is authenticated
+      //   // token.bankCustomerId = user.bankCustomerId;
+      // }
       return token;
     },
     async session({ token, session }: any) {
       session.user.id = token.sub;
-      session.user.bankCustomerId = token.bankCustomerId;
+      // session.user.bankCustomerId = token.bankCustomerId;
       return session;
     },
   },
