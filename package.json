@@ -26,7 +26,6 @@
     "apps/bank_webhook/*"
   ],
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "next": "^15.0.2",
