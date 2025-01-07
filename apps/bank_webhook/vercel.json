@@ -1,11 +1,7 @@
 {
   "functions": {
     "api/index.js": {
-      "runtime": "node16",
-      "includeFiles": [
-        "../../packages/node_modules/.prisma/**",
-        "../../packages/node_modules/@prisma/client/**"
-      ]
+      "includeFiles": "../../packages/node_modules/.prisma/** ../../packages/node_modules/@prisma/client/**"
     }
   },
   "builds": [
