@@ -8,6 +8,8 @@ dotenv.config();
 
 app.get("/", async (req, res) => {
   const result = await prisma.user.findMany();
+  console.log(prisma);
+
   res.status(200).json({
     message: "Success",
   });
