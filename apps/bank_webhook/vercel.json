@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "api/index.js": {
+      "runtime": "node16",
+      "includeFiles": [
+        "../../packages/node_modules/.prisma/**",
+        "../../packages/node_modules/@prisma/client/**"
+      ]
+    }
+  },
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    }
+  ]
+}
