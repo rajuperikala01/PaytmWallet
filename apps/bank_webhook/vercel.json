@@ -1,17 +1,13 @@
 {
   "functions": {
     "api/index.js": {
-      "runtime": "node16",
       "includeFiles": "../../packages/node_modules/.prisma/** ../../packages/node_modules/@prisma/client/**"
     }
   },
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb"
-      }
+      "use": "@vercel/node"
     }
   ]
 }
