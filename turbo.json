@@ -2,9 +2,23 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
   "pipeline": {
+    "prisma-generate": {
+      "dependsOn": [],
+      "outputs": [
+        "../../node_modules/.prisma/**",
+        "../../node_modules/@prisma/client/**"
+      ]
+    },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "dist/**", "api/**", "!.next/cache/**"]
+      "dependsOn": ["prisma-generate", "^build"],
+      "outputs": [
+        ".next/**",
+        "dist/**",
+        "api/**",
+        "../../node_modules/.prisma/**",
+        "../../node_modules/@prisma/client/**",
+        "!.next/cache/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]
