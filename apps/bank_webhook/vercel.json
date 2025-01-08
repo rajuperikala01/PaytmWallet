@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/index.js": {
-      "includeFiles": "../../packages/node_modules/.prisma/** ../../packages/node_modules/@prisma/client/**"
+      "includeFiles": ".prisma/**/*"
     }
   }
 }
