@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "npm run prisma-generate && esbuild ./src/index.ts --bundle --platform=node --outfile=api/index.js",
+    "build": "npm run prisma-generate && esbuild ./src/index.ts --bundle --platform=node -external:.prisma/client --outfile=api/index.js",
     "prisma-generate": "npx prisma generate --schema=../../packages/database/prisma/schema.prisma",
     "start": "node api/index.js",
     "dev": "npm run build && npm run start",
