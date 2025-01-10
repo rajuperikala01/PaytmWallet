@@ -58,6 +58,7 @@ export const POST = async (req: NextRequest) => {
         number: mobile,
         password: hash,
         name: username,
+        Balance: 2000 * 100,
       },
     });
 
