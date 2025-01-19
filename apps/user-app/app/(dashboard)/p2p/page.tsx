@@ -116,7 +116,7 @@ export default async function () {
       <div className="basis-full md:basis-[48%]">
         <Card title="Recent Transactions">
           <div className="flex flex-col gap-2">
-            {transactions &&
+            {transactions ? (
               transactions.map((tx: Transaction) => {
                 if (tx.role === "receiver" && tx.tranStatus === "Failed") {
                   return;
@@ -174,7 +174,10 @@ export default async function () {
                     </div>
                   </div>
                 );
-              })}
+              })
+            ) : (
+              <div className="text-center">No transactions yet</div>
+            )}
           </div>
         </Card>
       </div>
