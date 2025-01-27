@@ -5,10 +5,17 @@ import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { signupSchema } from "@repo/validation/signupschema";
 
+interface signupData {
+  email: string;
+  username: string;
+  password: string;
+  mobile: string;
+}
 function page() {
   const router = useRouter();
-  const [data, setData] = useState({
+  const [data, setData] = useState<signupData>({
     email: "",
     username: "",
     password: "",
@@ -22,6 +29,15 @@ function page() {
   async function handleSignUp(e: FormEvent) {
     try {
       e.preventDefault();
+      setError(null);
+      const validateData = signupSchema.safeParse(data);
+      if (!validateData.success) {
+        setError(
+          validateData.error.issues[0]?.message ||
+            "An error occurred. please try again"
+        );
+        return;
+      }
       setLoading(true);
       const res = await axios.post("/api/signup", {
         email: data.email,
@@ -78,7 +94,10 @@ function page() {
           Welcome to PayTM! <br />
           Create your account
         </div>
-        {error && <div className="text-red-500 text-sm">{error}</div>}
+        <div className="h-5">
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+        </div>
+
         <div>
           <label htmlFor="">Email:</label>
           <br />

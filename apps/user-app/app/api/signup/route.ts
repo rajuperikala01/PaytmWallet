@@ -14,7 +14,7 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(
       {
         message: "Validation Error",
-        error: validatedData.error.errors,
+        error: validatedData.error.issues[0]?.message,
       },
       { status: 400 }
     );
