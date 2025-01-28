@@ -10,13 +10,11 @@ import Loading2 from "./Loading2";
 interface objectP2p {
   to: string;
   amount: number;
-  createdAt: string;
 }
 function PersontoPerson() {
   const [data, setData] = useState<objectP2p>({
     to: "",
     amount: 0,
-    createdAt: new Date().toISOString(),
   });
   const [error, setError] = useState<string>("");
   const [processing, setProcessing] = useState<boolean>(false);
@@ -39,7 +37,6 @@ function PersontoPerson() {
       const response = await axios.post("/api/payments/send", {
         to: data.to,
         amount: data.amount,
-        createdAt: new Date().toISOString(),
       });
       if (response.status === 200) {
         router.push("/success");
