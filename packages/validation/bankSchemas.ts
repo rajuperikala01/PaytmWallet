@@ -42,6 +42,9 @@ export const p2pTransfer = zod.object({
     .string()
     .regex(/^[0-9]{10}$/, "Invalid mobile number. It must be 10 digits."),
   amount: zod.number().min(1, "Amount should be greater than Zero"),
+  createdAt: zod.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
 });
 
 export const depositSchema = zod.object({

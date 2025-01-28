@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
   const data = await req.json();
 
   const validation = p2pTransfer.safeParse(data);
-  if (validation.error) {
+  if (!validation.success) {
     return NextResponse.json(
       {
         error: validation.error.issues[0]?.message,
@@ -51,13 +51,14 @@ export const POST = async (req: NextRequest) => {
             number: validation.data.to,
           },
         });
+
         await prisma.walletTransactions.create({
           data: {
             amount: validation.data.amount * 100,
             senderId: fromUser.id,
             reciverId: toUser.id,
             status: "Failed",
-            createdAt: new Date(),
+            createdAt: new Date(validation.data.createdAt),
           },
         });
         return NextResponse.json(
@@ -113,7 +114,7 @@ export const POST = async (req: NextRequest) => {
               data: {
                 amount: validation.data.amount * 100,
                 status: "Success",
-                createdAt: new Date(),
+                createdAt: validation.data.createdAt,
                 senderId: fromUser.id,
                 reciverId: toUser.id,
               },

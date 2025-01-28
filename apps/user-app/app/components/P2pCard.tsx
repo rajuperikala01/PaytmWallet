@@ -10,15 +10,16 @@ import Loading2 from "./Loading2";
 interface objectP2p {
   to: string;
   amount: number;
+  createdAt: string;
 }
 function PersontoPerson() {
   const [data, setData] = useState<objectP2p>({
     to: "",
     amount: 0,
+    createdAt: new Date().toISOString(),
   });
   const [error, setError] = useState<string>("");
   const [processing, setProcessing] = useState<boolean>(false);
-  const [transactions, setTransactions] = useState([]);
   const [showPopUp, setShowPopUP] = useState<boolean>(false);
   const router = useRouter();
 
@@ -26,7 +27,7 @@ function PersontoPerson() {
     e.preventDefault();
     setError("");
     const validatedData = p2pTransfer.safeParse(data);
-    if (validatedData.error) {
+    if (!validatedData.success) {
       console.log(validatedData.error.issues[0]?.message);
       setError(validatedData.error.issues[0]?.message || "Validation Error");
       setShowPopUP(true);
@@ -38,6 +39,7 @@ function PersontoPerson() {
       const response = await axios.post("/api/payments/send", {
         to: data.to,
         amount: data.amount,
+        createdAt: new Date().toISOString(),
       });
       if (response.status === 200) {
         router.push("/success");
