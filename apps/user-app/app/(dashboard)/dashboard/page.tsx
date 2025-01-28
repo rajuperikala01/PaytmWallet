@@ -42,8 +42,7 @@ export default async function getServer() {
             mb-4 font-bold basis-2/3 pl-2 sm:leading-snug  md:text-4xl md:leading-normal lg:text-5xl"
           >
             Welcome...
-            <br />{" "}
-            <div className="tracking-widest sm:tracking-normal">{greet}</div>
+            <br /> <div>{greet}</div>
             <div>
               <div>
                 <div className="basis-1/4 pt-6 text-blue-950 lg:hidden">
