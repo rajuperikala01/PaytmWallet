@@ -114,7 +114,7 @@ export const POST = async (req: NextRequest) => {
               data: {
                 amount: validation.data.amount * 100,
                 status: "Success",
-                createdAt: validation.data.createdAt,
+                createdAt: new Date(validation.data.createdAt),
                 senderId: fromUser.id,
                 reciverId: toUser.id,
               },
